@@ -27,6 +27,15 @@ image_width DD 20
 image_height DD 20
 
 include 1rosu.inc
+include 1albastru.inc
+include 1portocaliu.inc
+include 1verde.inc
+include 1galben.inc
+include 1mov.inc
+include 1alb.inc
+include pgpt1.inc
+; include playgroud2.inc
+
 
 .code
 ; Make an image at the given coordinates
@@ -40,25 +49,63 @@ make_image proc
 	push ebp
 	mov ebp, esp
 	pusha
-	
-	mov eax, [ebp+arg4]			;eax=0 (ROSU) eax=1 (ALBASTRU) eax=2 (PORTOCALIU) eax=3 (PORTOCALIU) eax=4 (VERDE) eax=5 (ALB) eax=6 (PLAYGROUND) 
+								;eax=0 (ROSU are var_0)   eax=1 (ALBASTRU are var_1) eax=2 (PORTOCALIU are var_2) eax=3 (VERDE are var_3) 
+								;eax=4 (GALBEN are var_4) eax=5 (MOV are var_5)      eax=6 (ALB are var_6)        eax=7 (PLAYGROUND?????) 
+								
+	mov eax, [ebp+arg4]			
 	cmp eax, 0
 	je rosu
 	
+	cmp eax, 1
+	je albastru
 	
+	cmp eax, 2
+	je portocaliu
+	
+	cmp eax, 3
+	je verde
+
+	cmp eax, 4
+	je galben
+	
+	cmp eax, 5
+	je moov
+	
+	cmp eax, 6
+	je alb
+	
+	; cmp eax, 7
+	; je playground
+	
+
 rosu: 
-	lea esi, var_1
+	lea esi, var_0
 	jmp draw_image
 	
-; rosu: 
-	; lea esi, var_1
-	; jmp draw_image
-; rosu: 
-	; lea esi, var_1
-	; jmp draw_image
-; rosu: 
-	; lea esi, var_1
-	; jmp draw_image
+albastru: 
+	 lea esi, var_1
+	 jmp draw_image
+	 
+portocaliu: 
+	lea esi, var_2
+	jmp draw_image
+	
+verde: 
+	lea esi, var_3
+	jmp draw_image
+
+galben: 
+	lea esi, var_4
+	jmp draw_image
+
+moov: 
+	lea esi, var_5
+	jmp draw_image	
+
+alb:
+	lea esi, var_6
+	jmp draw_image	
+
 ; playground:
 	
 	
@@ -128,8 +175,86 @@ draw proc
 	call memset
 	add esp, 12
 
-	make_image_macro area, 20, 20, 0; draw the given image at coordinates (26,26)
 
+	make_image_macro area, 50,30
+	
+	make_image_macro area, 50, 30, 0
+	make_image_macro area, 70, 30, 0
+	make_image_macro area, 90, 30, 1
+	make_image_macro area, 110, 30, 1
+	make_image_macro area, 130, 30, 2
+	make_image_macro area, 150, 30, 2
+	make_image_macro area, 170, 30, 3
+	make_image_macro area, 190, 30, 3
+	make_image_macro area, 210, 30, 4
+	make_image_macro area, 230, 30, 4
+	make_image_macro area, 250, 30, 5
+	make_image_macro area, 270, 30, 5
+
+	make_image_macro area, 20, 40, 0
+	make_image_macro area, 40, 40, 0
+	make_image_macro area, 60, 40, 1
+	make_image_macro area, 80, 40, 1
+	make_image_macro area, 100, 40, 2
+	make_image_macro area, 120, 40, 2
+	make_image_macro area, 140, 40, 3
+	make_image_macro area, 160, 40, 3
+	make_image_macro area, 180, 40, 4
+	make_image_macro area, 200, 40, 4
+	make_image_macro area, 220, 40, 5
+	make_image_macro area, 240, 40, 5
+	
+	make_image_macro area, 20, 60, 0
+	make_image_macro area, 40, 60, 0
+	make_image_macro area, 60, 60, 1
+	make_image_macro area, 80, 60, 1
+	make_image_macro area, 100, 60, 2
+	make_image_macro area, 120, 60, 2
+	make_image_macro area, 140, 60, 3
+	make_image_macro area, 160, 60, 3
+	make_image_macro area, 180, 60, 4
+	make_image_macro area, 200, 60, 4
+	make_image_macro area, 220, 60, 5
+	make_image_macro area, 240, 60, 5
+	
+	make_image_macro area, 20, 80, 0
+	make_image_macro area, 40, 80, 0
+	make_image_macro area, 60, 80, 1
+	make_image_macro area, 80, 80, 1
+	make_image_macro area, 100, 80, 2
+	make_image_macro area, 120, 80, 2
+	make_image_macro area, 140, 80, 3
+	make_image_macro area, 160, 80, 3
+	make_image_macro area, 180, 80, 4
+	make_image_macro area, 200, 80, 4
+	make_image_macro area, 220, 80, 5
+	make_image_macro area, 240, 80, 5
+
+	make_image_macro area, 20, 100, 0
+	make_image_macro area, 40, 100, 0
+	make_image_macro area, 60, 100, 1
+	make_image_macro area, 80, 100, 1
+	make_image_macro area, 100, 100, 2
+	make_image_macro area, 120, 100, 2
+	make_image_macro area, 140, 100, 3
+	make_image_macro area, 160, 100, 3
+	make_image_macro area, 180, 100, 4
+	make_image_macro area, 200, 100, 4
+	make_image_macro area, 220, 100, 5
+	make_image_macro area, 240, 100, 5
+	
+	make_image_macro area, 20, 120, 0
+	make_image_macro area, 40, 120, 0
+	make_image_macro area, 60, 120, 1
+	make_image_macro area, 80, 120, 1
+	make_image_macro area, 100, 120, 2
+	make_image_macro area, 120, 120, 2
+	make_image_macro area, 140, 120, 3
+	make_image_macro area, 160, 120, 3
+	make_image_macro area, 180, 120, 4
+	make_image_macro area, 200, 120, 4
+	make_image_macro area, 220, 120, 5
+	make_image_macro area, 240, 120, 5
 	popa
 	mov esp, ebp
 	pop ebp
