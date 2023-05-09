@@ -30,6 +30,10 @@ sus DD 0
 val DD 0
 format DB "%d",13,10,0
 format2 DB "(%d, %d) ",13,10,0
+var1 dd 0
+var2 dd 0
+var3 dd 0
+
 
 loopcol dd 11
 loopline dd 22
@@ -52,8 +56,8 @@ matrice DD  2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2
 		DD  2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2
 		DD  2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2
 		DD  2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2
-		DD  2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2
-		DD  2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2
+		DD  2, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 2
+		DD  2, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 2
 		DD  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2
 		
 		
@@ -63,7 +67,7 @@ matrix_width EQU 12 * 4
 matrix_height EQU 22 * 4
 
 margin_top EQU 30
-margin_left EQU 70
+margin_left EQU 50
 margin_right EQU 270
 margin_bot EQU 450
 
@@ -375,17 +379,19 @@ endm
 afisare_matr macro 
 ;loop line loop col
 local loop_linie,loop_coloane,terminate_loop
-mov loopline,22
+mov loopline,21
 mov loopcol,11
 loop_linie:
 	
 	loop_coloana:
 	
-	 push loopcol
-	 push loopline
-	 push offset format2
-	 call printf
-	 add ESP, 12
+	 pozitie_element loopline,loopcol
+	 mov var1,EAX
+	 mov var2,EBX
+	 
+	 element loopline,loopcol
+	 mov var3,EAX
+	 make_image_macro area,var1,var2,var3
 	 dec loopcol
 	 cmp loopcol,0
 	 jge loop_coloana
