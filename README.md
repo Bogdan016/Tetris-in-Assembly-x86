@@ -7,8 +7,8 @@ Rules
 Tetris has very simple rules: you can only move the pieces in specific ways; your game is over if your pieces reach the top of the screen; and you can only remove pieces from the screen by filling all the blank space in a line.
 
 Rules give much needed structure to our play. A completely random environment offers no clue as to how to play and would be incredibly frustrating. How fortunate it is, then, that Tetris’s three rules are what shape it into such an award-winning game.
-
 The playground:
+
 ![playgroud2](https://user-images.githubusercontent.com/76945445/237032975-48becfaf-104d-4645-ad12-c289640ce13e.png)
 Tetrominos:
 ![1alb](https://user-images.githubusercontent.com/76945445/237045207-8dbb3ae0-6f9c-403b-934f-01ce30d623e5.png)
