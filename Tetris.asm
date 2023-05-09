@@ -29,7 +29,10 @@ stanga DD 0
 sus DD 0
 val DD 0
 format DB "%d",13,10,0
+format2 DB "(%d, %d) ",13,10,0
 
+loopcol dd 11
+loopline dd 22
 matrice DD  2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2
 		DD  2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2
 		DD  2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2
@@ -60,8 +63,8 @@ matrix_width EQU 12 * 4
 matrix_height EQU 22 * 4
 
 margin_top EQU 30
-margin_left EQU 50
-margin_right EQU 250
+margin_left EQU 70
+margin_right EQU 270
 margin_bot EQU 450
 
 counter DD 0 ; numara evenimentele de tip timer
@@ -82,6 +85,7 @@ include 1verde.inc
 include 1galben.inc
 include 1mov.inc
 include 1alb.inc
+include gri.inc
 ; include playgroud2.inc
 
 symbol_width EQU 10
@@ -179,7 +183,7 @@ make_image proc
 								
 	mov eax, [ebp+arg4]			
 	cmp eax, 0
-	je rosu
+	je alb
 	
 	cmp eax, 1
 	je albastru
@@ -197,10 +201,10 @@ make_image proc
 	je moov
 	
 	cmp eax, 6
-	je alb
+	je rosu
 	
-	; cmp eax, 7
-	; je playground
+	cmp eax, 7
+	je gri
 	
 
 rosu: 
@@ -230,7 +234,9 @@ moov:
 alb:
 	lea esi, var_6
 	jmp draw_image	
-
+gri:
+    lea esi, var_7
+	jmp draw_image
 ; playground:
 	
 	
@@ -354,8 +360,46 @@ element macro pozy, pozx
 	mov EAX, [EAX+EBX]
 endm
 
-
-
+pozitie_element macro pozy, pozx
+	mov ecx,pozy
+	mov EAX, square_size
+	mul ecx
+	mov EBX, EAX
+	add EBX, margin_top
+	
+	mov ECX,pozx
+	mov EAX, square_size
+	mul ECX
+	add EAX,margin_left
+endm
+afisare_matr macro 
+;loop line loop col
+local loop_linie,loop_coloane,terminate_loop
+mov loopline,22
+mov loopcol,11
+loop_linie:
+	
+	loop_coloana:
+	
+	 push loopcol
+	 push loopline
+	 push offset format2
+	 call printf
+	 add ESP, 12
+	 dec loopcol
+	 cmp loopcol,0
+	 jge loop_coloana
+	 
+	mov loopcol,11
+	dec loopline
+	
+	cmp loopline,0
+	jnge terminate_loop
+	jmp loop_linie
+	
+	terminate_loop:
+	
+endm
 ; functia de desenare - se apeleaza la fiecare click
 ; sau la fiecare interval de 200ms in care nu s-a dat click
 ; arg1 - evt (0 - initializare, 1 - click, 2 - s-a scurs intervalul fara click, 3 - s-a apasat o tasta)
@@ -428,15 +472,15 @@ afisare_litere:
 	make_text_macro 'T', area, 610, 430
 	make_text_macro 'E', area, 620, 430
 	
-	make_text_macro 'S', area, 570, 30
-	make_text_macro 'C', area, 580, 30
-	make_text_macro 'O', area, 590, 30
-	make_text_macro 'R', area, 600, 30
+	make_text_macro 'S', area, 300, 10
+	make_text_macro 'C', area, 310, 10
+	make_text_macro 'O', area, 320, 10
+	make_text_macro 'R', area, 330, 10
 
-	make_text_macro 'N', area, 270, 30
-	make_text_macro 'E', area, 280, 30
-	make_text_macro 'X', area, 290, 30
-	make_text_macro 'T', area, 300, 30
+	make_text_macro 'N', area, 300, 30
+	make_text_macro 'E', area, 310, 30
+	make_text_macro 'X', area, 320, 30
+	make_text_macro 'T', area, 330, 30
 																										;AICI
 																										;LUCREZ
 																										;ACUM
@@ -444,18 +488,13 @@ afisare_litere:
 matrice_joc:																						
 
 	element 2, 1
-	make_image_macro area, 50, 30, 0
-	make_image_macro area, 70, 30, 0
-	make_image_macro area, 90, 30, 1
-	make_image_macro area, 110, 30, 1
-	make_image_macro area, 130, 30, 2
-	make_image_macro area, 150, 30, 2
-	make_image_macro area, 170, 30, 3
-	make_image_macro area, 190, 30, 3
-	make_image_macro area, 210, 30, 4
-	make_image_macro area, 230, 30, 4
-
-	
+	; pozitie_element 1, 0
+	; push EAX
+	; push EBX
+	; push offset format2
+	; call printf
+	; add ESP, 12
+	afisare_matr
 afisare:
 
 	
@@ -465,61 +504,108 @@ pune_patrat:
 stop:
 
 	
-	
-Piese_joc:
-    ; T_tetromino_S1 350, 410, 00392cfh
-	; T_tetromino_S2 350, 310, 05938C8h
-	; T_tetromino_S3 490, 310, 0f9c22eh
-	; T_tetromino_S4 350, 210, 00392cfh
-	
-	; Z_tetromino_S1 410, 310, 07bc043h
-	; Z_tetromino_S2 410, 210, 07bc043h
-	
-	; I_tetromino_S1 450, 370, 0ee4035h
-	; I_tetromino_S2 470, 210, 0ee4035h
-	
-	;O_tetromino 130, 410, 0f37736h
+;			                 																				   				REGIUNEA DE JOC IMPLEMENTATA CU AJUTORUL IMAGINILOR:
+;	REGIUNEA DE JOC:
 
+;partea din stanga
+	 make_image_macro area, 50, 10, 7
+	 make_image_macro area, 50, 30, 7
+	 make_image_macro area, 50, 50, 7
+	 make_image_macro area, 50, 70, 7
+	 make_image_macro area, 50, 90, 7
+	 make_image_macro area, 50, 110, 7
+	 make_image_macro area, 50, 130, 7
+	 make_image_macro area, 50, 150, 7
+	 make_image_macro area, 50, 170, 7
+	 make_image_macro area, 50, 190, 7
+	 make_image_macro area, 50, 210, 7
+	 make_image_macro area, 50, 230, 7
+	 make_image_macro area, 50, 250, 7
+	 make_image_macro area, 50, 270, 7
+	 make_image_macro area, 50, 290, 7
+	 make_image_macro area, 50, 310, 7
+	 make_image_macro area, 50, 330, 7
+	 make_image_macro area, 50, 350, 7
+	 make_image_macro area, 50, 370, 7
+	 make_image_macro area, 50, 390, 7
+	 make_image_macro area, 50, 410, 7
+	 make_image_macro area, 50, 430, 7
+	 make_image_macro area, 50, 450, 7
+	 make_image_macro area, 50, 450, 7
+	 make_image_macro area, 70, 450, 7
+	 make_image_macro area, 90, 450, 7
+;Partea de jos:	 
+	 make_image_macro area, 110, 450, 7
+	 make_image_macro area, 130, 450, 7
+	 make_image_macro area, 150, 450, 7
+	 make_image_macro area, 170, 450, 7
+	 make_image_macro area, 190, 450, 7
+	 make_image_macro area, 210, 450, 7
+	 make_image_macro area, 230, 450, 7
+	 make_image_macro area, 250, 450, 7
+	 make_image_macro area, 270, 450, 7
 
-;			x, y, lungime, culoare						   			Aici desenez regiunea de joc, poate la final implementez cu imagine 
-regiune_joc:
-	 orizontala 50, 30, 200, 0
-	 orizontala 50, 31, 200, 0											;linia de sus ( am pus de 3 ori sa fie mai vizibila )
-	 orizontala 50, 32, 200, 0
-	 
-	 orizontala 50, 450, 203, 0
-	 orizontala 50, 451, 203, 0
-	 orizontala 50, 452, 203, 0
-	 
-	 verticala 50, 30, 420, 0
-	 verticala 51, 30, 420, 0
-	 verticala 52, 30, 420, 0
-	 
-	 verticala 250, 30, 420, 0
-	 verticala 251, 30, 420, 0
-	 verticala 252, 30, 420, 0
+;PARTEA DIN DREAPTA	 
+	 make_image_macro area, 270, 10, 7
+	 make_image_macro area, 270, 30, 7
+	 make_image_macro area, 270, 50, 7
+	 make_image_macro area, 270, 70, 7
+	 make_image_macro area, 270, 90, 7
+	 make_image_macro area, 270, 110, 7
+	 make_image_macro area, 270, 130, 7
+	 make_image_macro area, 270, 150, 7
+	 make_image_macro area, 270, 170, 7
+	 make_image_macro area, 270, 190, 7
+	 make_image_macro area, 270, 210, 7
+	 make_image_macro area, 270, 230, 7
+	 make_image_macro area, 270, 250, 7
+	 make_image_macro area, 270, 270, 7
+	 make_image_macro area, 270, 290, 7
+	 make_image_macro area, 270, 310, 7
+	 make_image_macro area, 270, 330, 7
+	 make_image_macro area, 270, 350, 7
+	 make_image_macro area, 270, 370, 7
+	 make_image_macro area, 270, 390, 7
+	 make_image_macro area, 270, 410, 7
+	 make_image_macro area, 270, 430, 7
+	 make_image_macro area, 270, 450, 7
+	 make_image_macro area, 270, 450, 7
 
-casute_joc:
-	orizontala 50, 50, 200, 0
-	orizontala 50, 70, 200, 0
-	orizontala 50, 90, 200, 0
-	orizontala 50, 110, 200, 0
-	orizontala 50, 130, 200, 0
-	orizontala 50, 150, 200, 0
-	orizontala 50, 170, 200, 0
-	orizontala 50, 190, 200, 0
-	orizontala 50, 210, 200, 0
-	orizontala 50, 230, 200, 0
-	orizontala 50, 250, 200, 0
-	orizontala 50, 270, 200, 0
-	orizontala 50, 290, 200, 0
-	orizontala 50, 310, 200, 0
-	orizontala 50, 330, 200, 0
-	orizontala 50, 350, 200, 0
-	orizontala 50, 370, 200, 0
-	orizontala 50, 390, 200, 0
-	orizontala 50, 410, 200, 0
-	orizontala 50, 430, 200, 0
+;PARTEA DE SUS
+	 make_image_macro area, 70, 10, 7
+	 make_image_macro area, 90, 10, 7
+	 make_image_macro area, 110, 10, 7
+	 make_image_macro area, 130, 10, 7
+	 make_image_macro area, 150, 10, 7
+	 make_image_macro area, 170, 10, 7
+	 make_image_macro area, 190, 10, 7
+	 make_image_macro area, 210, 10, 7
+	 make_image_macro area, 230, 10, 7
+	 make_image_macro area, 250, 10, 7
+	 make_image_macro area, 270, 10, 7
+
+; casute_joc:
+	
+	orizontala 50,50,220,0
+	orizontala 50, 70, 220, 0
+	orizontala 50, 90, 220, 0
+	orizontala 50, 110, 220, 0
+	orizontala 50, 130, 220, 0
+	orizontala 50, 150, 220, 0
+	orizontala 50, 170, 220, 0
+	orizontala 50, 190, 220, 0
+	orizontala 50, 210, 220, 0
+	orizontala 50, 230, 220, 0
+	orizontala 50, 250, 220, 0
+	orizontala 50, 270, 220, 0
+	orizontala 50, 290, 220, 0
+	orizontala 50, 310, 220, 0
+	orizontala 50, 330, 220, 0
+	orizontala 50, 350, 220, 0
+	orizontala 50, 370, 220, 0
+	orizontala 50, 390, 220, 0
+	orizontala 50, 410, 220, 0
+	orizontala 50, 430, 220, 0
 
     verticala 70, 30, 420, 0
     verticala 90, 30, 420, 0
@@ -530,19 +616,17 @@ casute_joc:
     verticala 190, 30, 420, 0
     verticala 210, 30, 420, 0
     verticala 230, 30, 420, 0
+    verticala 250, 30, 420, 0
    
 paleta_de_culori:
      
-	 square 490, 430 , 0f9c22eh
-	 square 510, 430 , 00392cfh
-	 square 530, 430 , 05938C8h
-	
-	 square 490, 410 , 07bc043h
-	 square 510, 410 , 0ee4035h
-	 square 530, 410 , 0f37736h
-
+	 make_image_macro area, 490, 430, 0
+	 make_image_macro area, 510, 430, 1
+	 make_image_macro area, 530, 430, 2
+	 make_image_macro area, 490, 410, 3
+	 make_image_macro area, 510, 410, 4
+	 make_image_macro area, 530, 410, 5
    
-
 final_draw:
 	popa
 	mov esp, ebp
