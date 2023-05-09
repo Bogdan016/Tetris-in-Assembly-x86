@@ -70,6 +70,19 @@ arg1 EQU 8
 arg2 EQU 12
 arg3 EQU 16
 arg4 EQU 20
+arg4 EQU 20
+
+image_width DD 20
+image_height DD 20
+
+include 1rosu.inc
+include 1albastru.inc
+include 1portocaliu.inc
+include 1verde.inc
+include 1galben.inc
+include 1mov.inc
+include 1alb.inc
+; include playgroud2.inc
 
 symbol_width EQU 10
 symbol_height EQU 20
@@ -154,6 +167,123 @@ make_text_macro macro symbol, drawArea, x, y
 	call make_text
 	add esp, 16
 endm
+
+
+								;PROCEDURA PENTRU DESENAREA IMAGINII
+make_image proc
+	push ebp
+	mov ebp, esp
+	pusha
+								;eax=0 (ROSU are var_0)   eax=1 (ALBASTRU are var_1) eax=2 (PORTOCALIU are var_2) eax=3 (VERDE are var_3) 
+								;eax=4 (GALBEN are var_4) eax=5 (MOV are var_5)      eax=6 (ALB are var_6)        eax=7 (PLAYGROUND?????) 
+								
+	mov eax, [ebp+arg4]			
+	cmp eax, 0
+	je rosu
+	
+	cmp eax, 1
+	je albastru
+	
+	cmp eax, 2
+	je portocaliu
+	
+	cmp eax, 3
+	je verde
+
+	cmp eax, 4
+	je galben
+	
+	cmp eax, 5
+	je moov
+	
+	cmp eax, 6
+	je alb
+	
+	; cmp eax, 7
+	; je playground
+	
+
+rosu: 
+	lea esi, var_0
+	jmp draw_image
+	
+albastru: 
+	 lea esi, var_1
+	 jmp draw_image
+	 
+portocaliu: 
+	lea esi, var_2
+	jmp draw_image
+	
+verde: 
+	lea esi, var_3
+	jmp draw_image
+
+galben: 
+	lea esi, var_4
+	jmp draw_image
+
+moov: 
+	lea esi, var_5
+	jmp draw_image	
+
+alb:
+	lea esi, var_6
+	jmp draw_image	
+
+; playground:
+	
+	
+draw_image:
+	mov ecx, image_height
+loop_draw_lines:
+	mov edi, [ebp+arg1] ; pointer to pixel area
+	mov eax, [ebp+arg3] ; pointer to coordinate y
+	
+	add eax, image_height 
+	sub eax, ecx ; current line to draw (total - ecx)
+	
+	mov ebx, area_width
+	mul ebx	; get to current line
+	
+	add eax, [ebp+arg2] ; get to coordinate x in current line
+	shl eax, 2 ; multiply by 4 (DWORD per pixel)
+	add edi, eax
+	
+	push ecx
+	mov ecx, image_width ; store drawing width for drawing loop
+	
+loop_draw_columns:
+
+	push eax
+	mov eax, dword ptr[esi] 
+	mov dword ptr [edi], eax ; take data from variable to canvas
+	pop eax
+	
+	add esi, 4
+	add edi, 4 ; next dword (4 Bytes)
+	
+	loop loop_draw_columns
+	
+	pop ecx
+	loop loop_draw_lines
+	popa
+	
+	mov esp, ebp
+	pop ebp
+	ret
+make_image endp
+
+; simple macro to call the procedure easier																	MACRO-UL PENTRU DESENAREA IMAGINII
+make_image_macro macro drawArea, x, y, nr_img
+	push nr_img
+	push y
+	push x
+	push drawArea
+	call make_image
+	add esp, 16
+endm
+
 																	;MACRO PENTRU REPREZENTAREA UNEI LINII ORIZONTALE ( FOLOSIT PENTRU CREAREA TABLEI DE JOC )
 orizontala macro x, y, lungime, culoare
 local bucla1
@@ -210,78 +340,6 @@ loop2:
 	loop loop1
 endm
 		
-																							;MACRO PENTRU REPREZENTAREA UNUI TETROMINO   T   FOLOSIND MACRO-UL SQUARE			
-T_tetromino_S1 macro x, y, color;		   _	
-	square x, y+20, color;				 _|_|_								
-    square x+20, y+20, color;			|_|_|_|
-    square x+40, y+20, color;							!!!	IN LOC DE SQUARE POT PUNE IMAGINE
-    square x+20, y, color
-endm
-     							   	  
-T_tetromino_S2 macro x, y, color;		  _	
-	square x, y, color;				     |_|_								
-    square x, y+20, color;    	    	 |_|_|
-    square x, y+40, color;               |_|
-    square x+20, y+20, color
-endm
-
-T_tetromino_S3 macro x, y, color;			   
-	square x, y, color;			    	 _ _ _								
-    square x+20, y,color;	    		|_|_|_|
-    square x+40, y, color;		    	  |_|
-    square x+20, y+20, color
-endm
-
-T_tetromino_S4 macro x, y, color
-    square x+20, y,    color;			 	 _
-    square x,    y+20,  color;			   _|_|
-    square x+20, y+20,  color;            |_|_|
-    square x+20, y+40,  color;              |_|
-endm
-
-																							;MACRO PENTRU REPREZENTAREA UNUI TETROMINO   Z   FOLOSIND MACRO-UL SQUARE
-Z_tetromino_S1 macro x, y, color
-    square x, y, color;				      _ _		
-    square x+20, y, color;			     |_|_|_
-    square x+20, y+20, color;		       |_|_|
-    square x+40, y+20, color;
-endm		
-
-Z_tetromino_S2 macro x, y, color;    	      		
-    square x+20, y, color;		            _
-    square x, y+20, color;		   	 	  _|_|
-    square x+20, y+20, color;	  	   	 |_|_|
-    square x, y+40, color;				 |_|
-endm									
-																							;MACRO PENTRU REPREZENTAREA UNUI TETROMINO   I   FOLOSIND MACRO-UL SQUARE
-I_tetromino_S1 macro x, y, color;         _
-    square x, y, color;					 |_|
-    square x, y+20, color;				 |_|	
-    square x, y+40, color;          	 |_|
-    square x, y+60, color;          	 |_|
-endm
-
-I_tetromino_S2 macro x, y, color
-    square x, y, color;					 _ _ _ _	
-    square x+20, y, color;				|_|_|_|_|
-    square x+40, y, color;
-    square x+60, y, color;
-endm
-
-																							;MACRO PENTRU REPREZENTAREA UNUI TETROMINO   O   FOLOSIND MACRO-UL SQUARE
-O_tetromino macro x, y, color
-    square x, y, color;					 _ _
-    square x+20, y, color;				|_|_|
-    square x, y+20, color;				|_|_|
-    square x+20, y+20, color
-endm
-
-; O_matrice macro pozx, pozy, color
-    ; square pozx, pozy, color;		    
-    ; square x+20, y, color;				
-    ; square x, y+20, color;				
-    ; square x+20, y+20, color
-; endm
 
 element macro pozy, pozx
 	mov EAX, pozy
@@ -295,6 +353,8 @@ element macro pozy, pozx
 	lea EAX, matrice
 	mov EAX, [EAX+EBX]
 endm
+
+
 
 ; functia de desenare - se apeleaza la fiecare click
 ; sau la fiecare interval de 200ms in care nu s-a dat click
@@ -384,7 +444,17 @@ afisare_litere:
 matrice_joc:																						
 
 	element 2, 1
-	
+	make_image_macro area, 50, 30, 0
+	make_image_macro area, 70, 30, 0
+	make_image_macro area, 90, 30, 1
+	make_image_macro area, 110, 30, 1
+	make_image_macro area, 130, 30, 2
+	make_image_macro area, 150, 30, 2
+	make_image_macro area, 170, 30, 3
+	make_image_macro area, 190, 30, 3
+	make_image_macro area, 210, 30, 4
+	make_image_macro area, 230, 30, 4
+
 	
 afisare:
 
@@ -397,16 +467,16 @@ stop:
 	
 	
 Piese_joc:
-    T_tetromino_S1 350, 410, 00392cfh
-	T_tetromino_S2 350, 310, 05938C8h
-	T_tetromino_S3 490, 310, 0f9c22eh
-	T_tetromino_S4 350, 210, 00392cfh
+    ; T_tetromino_S1 350, 410, 00392cfh
+	; T_tetromino_S2 350, 310, 05938C8h
+	; T_tetromino_S3 490, 310, 0f9c22eh
+	; T_tetromino_S4 350, 210, 00392cfh
 	
-	Z_tetromino_S1 410, 310, 07bc043h
-	Z_tetromino_S2 410, 210, 07bc043h
+	; Z_tetromino_S1 410, 310, 07bc043h
+	; Z_tetromino_S2 410, 210, 07bc043h
 	
-	I_tetromino_S1 450, 370, 0ee4035h
-	I_tetromino_S2 470, 210, 0ee4035h
+	; I_tetromino_S1 450, 370, 0ee4035h
+	; I_tetromino_S2 470, 210, 0ee4035h
 	
 	;O_tetromino 130, 410, 0f37736h
 
@@ -534,3 +604,70 @@ end start
 		;2 0 0 0 0 0 0 0 0 0 0 2	(50,410) (70,410) (90,410) (110,410) (130,410) (150,410) (170,410) (190,410) (210,410) (230,410)                                                                                                                         
 		;2 0 0 0 0 0 0 0 0 0 0 2	(50,430) (70,430) (90,430) (110,430) (130,430) (150,430) (170,430) (190,430) (210,430) (230,430) 
 		;2 2 2 2 2 2 2 2 2 2 2 2
+		
+		
+																							MACRO PENTRU REPREZENTAREA UNUI TETROMINO   T   FOLOSIND MACRO-UL SQUARE			
+; T_tetromino_S1 macro x, y, color;		   _	
+	; square x, y+20, color;				 _|_|_								
+    ; square x+20, y+20, color;			|_|_|_|
+    ; square x+40, y+20, color;							!!!	IN LOC DE SQUARE POT PUNE IMAGINE
+    ; square x+20, y, color
+; endm
+     							   	  
+; T_tetromino_S2 macro x, y, color;		  _	
+	; square x, y, color;				     |_|_								
+    ; square x, y+20, color;    	    	 |_|_|
+    ; square x, y+40, color;               |_|
+    ; square x+20, y+20, color
+; endm
+
+; T_tetromino_S3 macro x, y, color;			   
+	; square x, y, color;			    	 _ _ _								
+    ; square x+20, y,color;	    		|_|_|_|
+    ; square x+40, y, color;		    	  |_|
+    ; square x+20, y+20, color
+; endm
+
+; T_tetromino_S4 macro x, y, color
+    ; square x+20, y,    color;			 	 _
+    ; square x,    y+20,  color;			   _|_|
+    ; square x+20, y+20,  color;            |_|_|
+    ; square x+20, y+40,  color;              |_|
+; endm
+
+																							MACRO PENTRU REPREZENTAREA UNUI TETROMINO   Z   FOLOSIND MACRO-UL SQUARE
+; Z_tetromino_S1 macro x, y, color
+    ; square x, y, color;				      _ _		
+    ; square x+20, y, color;			     |_|_|_
+    ; square x+20, y+20, color;		       |_|_|
+    ; square x+40, y+20, color;
+; endm		
+
+; Z_tetromino_S2 macro x, y, color;    	      		
+    ; square x+20, y, color;		            _
+    ; square x, y+20, color;		   	 	  _|_|
+    ; square x+20, y+20, color;	  	   	 |_|_|
+    ; square x, y+40, color;				 |_|
+; endm									
+																							MACRO PENTRU REPREZENTAREA UNUI TETROMINO   I   FOLOSIND MACRO-UL SQUARE
+; I_tetromino_S1 macro x, y, color;         _
+    ; square x, y, color;					 |_|
+    ; square x, y+20, color;				 |_|	
+    ; square x, y+40, color;          	 |_|
+    ; square x, y+60, color;          	 |_|
+; endm
+
+; I_tetromino_S2 macro x, y, color
+    ; square x, y, color;					 _ _ _ _	
+    ; square x+20, y, color;				|_|_|_|_|
+    ; square x+40, y, color;
+    ; square x+60, y, color;
+; endm
+
+																							MACRO PENTRU REPREZENTAREA UNUI TETROMINO   O   FOLOSIND MACRO-UL SQUARE
+; O_tetromino macro x, y, color
+    ; square x, y, color;					 _ _
+    ; square x+20, y, color;				|_|_|
+    ; square x, y+20, color;				|_|_|
+    ; square x+20, y+20, color
+; endm
