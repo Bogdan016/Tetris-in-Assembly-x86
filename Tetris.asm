@@ -45,32 +45,34 @@ format2 DB "(%d, %d) ",13,10,0
 var1 DD 0
 var2 DD 0
 var3 DD 0
-
+var4 DD 0
+cod_actual DD 1
+mutare_bloc_ok dd 1
 loopcol DD 11
 loopline DD 22
 
-matrice DD  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-		DD  2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2
-		DD  2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2
-		DD  2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2
-		DD  2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2
-		DD  2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2
-		DD  2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2
-		DD  2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2
-		DD  2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2
-		DD  2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2
-		DD  2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2
-		DD  2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2
-		DD  2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2
-		DD  2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2
-		DD  2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2
-		DD  2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2
-		DD  2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2
-		DD  2, 6, 1, 1, 0, 0, 0, 0, 0, 0, 3, 2
-		DD  2, 6, 6, 1, 2, 2, 2, 0, 2, 0, 3, 2
-		DD  2, 6, 5, 1, 4, 4, 2, 1, 2, 2, 3, 2
-		DD  2, 5, 5, 5, 4, 4, 1, 1, 1, 2, 3, 2
-		DD  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2
+matrice DD  -1, 0, 0, 0, 9, 9, 9, 0, 0, 0, 0, -1
+		DD  -1, 0, 0, 0, 0, 9, 0, 0, 0, 0, 0, -1
+		DD  -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1
+		DD  -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1
+		DD  -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1
+		DD  -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1 
+		DD  -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1
+		DD  -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1
+		DD  -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1
+		DD  -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1
+		DD  -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1
+		DD  -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1
+		DD  -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1
+		DD  -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1  
+		DD  -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1
+		DD  -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1
+		DD  -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1
+		DD  -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1
+		DD  -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1
+		DD  -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1 
+		DD  -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1
+		DD  -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, -1	
 																		
 square_size EQU 20
 matrix_width EQU 12 * 4
@@ -207,6 +209,8 @@ make_image proc
 	cmp eax, 7
 	je gri
 	
+	cmp eax,-1
+	je border
 rosu: 
 	lea esi, var_0
 	jmp draw_image
@@ -273,6 +277,7 @@ loop_draw_columns:
 	loop loop_draw_lines
 	popa
 	
+	border:
 	mov esp, ebp
 	pop ebp
 	ret
@@ -356,6 +361,18 @@ element macro pozy, pozx
 	lea EAX, matrice
 	mov EAX, [EAX+EBX]
 endm
+
+modif_element macro pozy, pozx,cod			
+	mov EAX, pozy
+	mov EBX, matrix_width
+	mul EBX
+	mov EBX, EAX 
+	mov EAX, pozx
+	mov ECX,4
+	mul ECX
+	add EBX, EAX
+	mov matrice[EBX],cod; 
+endm
 										;CALCULEAZA POZITIA PE ECRAN AL UNUI ELEMENT DIN MATRICE DE LA COORDONATELE (POZX, POZY)
 pozitie_element macro pozy, pozx		
 	mov ECX, pozy
@@ -371,21 +388,32 @@ pozitie_element macro pozy, pozx
 endm
 										;TRECE PRIN FIECARE ELEMENT DIN MATRICE SI IL AFISEAZA 0-ALB, 1-ALBASTRU, 2-PORTOCALIU, 3-VERDE, 4-GALBEN, 5-MOV, 6-ROSU
 afisare_matr macro 
-;loop line loop col
-local loop_linie,loop_coloane,terminate_loop
+
+local loop_linie,loop_coloana,terminate_loop,stop
+
 mov loopline,21
 mov loopcol,11
+
 loop_linie:
-	
+
 	loop_coloana:
 	
 	 pozitie_element loopline,loopcol
-	 mov var1,EAX
-	 mov var2,EBX
+	 mov var1,EAX						;pune in var1 pozitia lui x
+	 mov var2,EBX						;pune in var2 pozitia lui y
 	 
 	 element loopline,loopcol
-	 mov var3,EAX
-	 make_image_macro area,var1,var2,var3
+	 mov var3,EAX						;pune in var3 valoarea de la pozitia x,y
+	 mov EBX,7
+	 mov EDX,0
+	 div EBX; ba gen tu cand imparti EAX la 7 ramane catul in EAX si restul in EDX stiu
+	 mov var3,EDX
+	 cmp var3, 0						
+	 jg stop
+										;cum pun counterul?
+										;cum pun figurile? cum reprezint figurile?	
+	 stop:
+	 make_image_macro area,var1,var2,var3  
 	 dec loopcol
 	 cmp loopcol,0
 	 jge loop_coloana
@@ -399,7 +427,115 @@ loop_linie:
 	
 	terminate_loop:
 endm
+verificare_mutare_bloc macro cod
+local loop_linie,loop_coloana,terminate_loop,stop,mutam	
 
+mov loopline,20
+mov loopcol,11
+mov mutare_bloc_ok,1
+loop_linie:
+
+	loop_coloana:
+	
+	 pozitie_element loopline,loopcol
+	 mov var1,EAX						;pune in var1 pozitia lui x
+	 mov var2,EBX						;pune in var2 pozitia lui y
+	 
+	 element loopline,loopcol
+	 mov var3,EAX						;pune in var3 valoarea de la pozitia x,y  
+	 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+	mov EAX,cod
+	cmp var3,EAX
+	jne mutam
+	
+	mov mutare_bloc_ok,0
+	jmp terminate_loop
+	
+	mutam:
+	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	 dec loopcol
+	 cmp loopcol,0
+	 jge loop_coloana
+	 
+	mov loopcol,11
+	dec loopline
+	
+	cmp loopline,20
+	jnge terminate_loop
+	jmp loop_linie
+	
+	terminate_loop:
+endm
+
+mutare_bloc macro cod
+
+local loop_linie,loop_coloana,terminate_loop,stop,nu_mutam
+
+mov loopline,20
+mov loopcol,11
+
+loop_linie:
+
+	loop_coloana:
+	
+	 pozitie_element loopline,loopcol
+	 mov var1,EAX						;pune in var1 pozitia lui x
+	 mov var2,EBX						;pune in var2 pozitia lui y
+	 
+	 element loopline,loopcol
+	 mov var3,EAX						;pune in var3 valoarea de la pozitia x,y  
+	 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+	
+	cmp var3,0
+	jne nu_mutam
+	
+	mov EAX,loopline
+	mov var4,EAX
+	sub var4,1
+	element var4,loopcol
+	mov var4,EAX
+	
+	mov EAX,cod
+	cmp var4,EAX
+	jne nu_mutam
+	
+	modif_element loopline,loopcol,cod
+	dec loopline
+	modif_element loopline,loopcol,0
+	inc loopline
+	
+	nu_mutam:
+	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	 dec loopcol
+	 cmp loopcol,0
+	 jge loop_coloana
+	 
+	mov loopcol,11
+	dec loopline
+	
+	cmp loopline,1
+	jnge terminate_loop
+	jmp loop_linie
+	
+	terminate_loop:
+endm
+manipulare_miscare macro cod
+local nu_putem_muta
+	verificare_mutare_bloc cod
+	cmp mutare_bloc_ok,0
+	je nu_putem_muta
+	
+	mutare_bloc cod
+	
+	nu_putem_muta:
+endm
+manipulare_cod macro cod
+
+manipulare_miscare cod
+
+endm
 ; functia de desenare - se apeleaza la fiecare click
 ; sau la fiecare interval de 200ms in care nu s-a dat click
 ; arg1 - evt (0 - initializare, 1 - click, 2 - s-a scurs intervalul fara click, 3 - s-a apasat o tasta)
@@ -482,18 +618,19 @@ afisare_litere:
 matrice_joc:																						
 
 	element 2, 1
-	; pozitie_element 1, 0
+	; pozitie_element 1, 0 
 	; push EAX
 	; push EBX
 	; push offset format2
 	; call printf
 	; add ESP, 12
 	afisare_matr
+	manipulare_cod 9
 
-			                 								  ;REGIUNEA DE JOC IMPLEMENTATA CU AJUTORUL IMAGINILOR:
+	;REGIUNEA DE JOC IMPLEMENTATA CU AJUTORUL IMAGINILOR:
 
 ;PATRATELE GRI CARE DELIMITEAZA PARTEA DIN STANGA A TERENULUI
-	 make_image_macro area, 50, 10, 7
+	 make_image_macro area, 50, 10, 7 
 	 make_image_macro area, 50, 30, 7
 	 make_image_macro area, 50, 50, 7
 	 make_image_macro area, 50, 70, 7
