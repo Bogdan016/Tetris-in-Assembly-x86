@@ -46,13 +46,13 @@ var1 DD 0
 var2 DD 0
 var3 DD 0
 var4 DD 0
-cod_actual DD 1
+cod_actual DD 1 ; 
 mutare_bloc_ok dd 1
 loopcol DD 11
 loopline DD 22
 
-matrice DD  -1, 0, 0, 0, 9, 9, 9, 0, 0, 0, 0, -1
-		DD  -1, 0, 0, 0, 0, 9, 0, 0, 0, 0, 0, -1
+matrice DD  -1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, -1
+		DD  -1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, -1
 		DD  -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1
 		DD  -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1
 		DD  -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1
@@ -67,7 +67,7 @@ matrice DD  -1, 0, 0, 0, 9, 9, 9, 0, 0, 0, 0, -1
 		DD  -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1  
 		DD  -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1
 		DD  -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1
-		DD  -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1
+		DD  -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1 
 		DD  -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1
 		DD  -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1
 		DD  -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1 
@@ -371,7 +371,8 @@ modif_element macro pozy, pozx,cod
 	mov ECX,4
 	mul ECX
 	add EBX, EAX
-	mov matrice[EBX],cod; 
+	mov EAX,cod
+	mov matrice[EBX],EAX; 
 endm
 										;CALCULEAZA POZITIA PE ECRAN AL UNUI ELEMENT DIN MATRICE DE LA COORDONATELE (POZX, POZY)
 pozitie_element macro pozy, pozx		
@@ -531,8 +532,37 @@ local nu_putem_muta
 	
 	nu_putem_muta:
 endm
-manipulare_cod macro cod
 
+desenare_figura_1 macro cod
+modif_element 0,5,cod
+modif_element 0,6,cod
+modif_element 0,7,cod
+endm
+
+manipulare_cod macro cod
+local miscare_continue,nu_e_figura_1 ;dam un lol mai incolo? corect, no bine ma, ne auzim nb
+cmp mutare_bloc_ok,0
+
+jne miscare_continue
+
+inc cod
+mov EBX,cod
+
+mov EAX,EBX
+ mov EBX,5
+ div EBX
+
+cmp EDX,2   
+jne nu_e_figura_1
+
+desenare_figura_1 cod
+
+nu_e_figura_1:
+
+
+mov mutare_bloc_ok,1
+
+miscare_continue:
 manipulare_miscare cod
 
 endm
@@ -624,8 +654,8 @@ matrice_joc:
 	; push offset format2
 	; call printf
 	; add ESP, 12
+	manipulare_cod cod_actual
 	afisare_matr
-	manipulare_cod 9
 
 	;REGIUNEA DE JOC IMPLEMENTATA CU AJUTORUL IMAGINILOR:
 
