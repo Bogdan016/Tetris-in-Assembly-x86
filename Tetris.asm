@@ -37,7 +37,7 @@ var3 dd 0
 
 loopcol dd 11
 loopline dd 22
-matrice DD  2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2
+matrice DD  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 		DD  2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2
 		DD  2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2
 		DD  2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2
@@ -54,12 +54,12 @@ matrice DD  2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2
 		DD  2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2
 		DD  2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2
 		DD  2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2
-		DD  2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2
-		DD  2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2
-		DD  2, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 2
-		DD  2, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 2
+		DD  2, 6, 1, 1, 0, 0, 0, 0, 0, 0, 3, 2
+		DD  2, 6, 6, 1, 2, 2, 2, 0, 2, 0, 3, 2
+		DD  2, 6, 5, 1, 4, 4, 2, 1, 2, 2, 3, 2
+		DD  2, 5, 5, 5, 4, 4, 1, 1, 1, 2, 3, 2
 		DD  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2
-		
+																		
 		
 		
 square_size EQU 20
@@ -90,7 +90,8 @@ include 1galben.inc
 include 1mov.inc
 include 1alb.inc
 include gri.inc
-; include playgroud2.inc
+include playgroud2.inc
+
 
 symbol_width EQU 10
 symbol_height EQU 20
@@ -210,7 +211,21 @@ make_image proc
 	cmp eax, 7
 	je gri
 	
+	; cmp eax, 8
+	; je playground1
+	
+	; cmp eax, 9
+	; je playground2
 
+	; cmp eax, 10
+	; je playground3
+	
+	; cmp eax, 11
+	; je playground4
+	
+	; cmp eax, 12
+	; je playground5
+	
 rosu: 
 	lea esi, var_0
 	jmp draw_image
@@ -241,8 +256,22 @@ alb:
 gri:
     lea esi, var_7
 	jmp draw_image
-; playground:
 	
+; playground1:
+	; lea esi, var_8
+	; jmp draw_image
+; playground2:
+	; lea esi, var_9
+	; jmp draw_image
+; playground3:
+	; lea esi, var_10
+	; jmp draw_image
+; playground4:
+	; lea esi, var_11
+	; jmp draw_image
+; playground5:
+	; lea esi, var_12
+	; jmp draw_image
 	
 draw_image:
 	mov ecx, image_height
@@ -337,16 +366,16 @@ local loop1, loop2
 	lea eax, [eax*4]    ; 
 	add eax, area       ; eax = &area[y * area_width + x]
 
-	mov ecx, 20         ; ecx = size
+	mov ecx, 10         ; ecx = size
 loop1:
 	push ecx            ; punem contorul pe stiva
-	mov ecx, 20       ; si il initializam din nou cu size ( pentru urmatorul rand )
+	mov ecx, 10       ; si il initializam din nou cu size ( pentru urmatorul rand )
 loop2:
 	mov dword ptr [eax], color 
 	add eax, 4          
 	loop loop2
 	pop ecx             
-	add eax, (area_width - 20) * 4 ; trecem la urmatorul rand
+	add eax, (area_width - 10) * 4 ; trecem la urmatorul rand
 	loop loop1
 endm
 		
@@ -450,17 +479,17 @@ afisare_litere:
 	mov edx, 0
 	div ebx
 	add edx, '0'
-	make_text_macro edx, area, 30, 10
+	make_text_macro edx, area, 30, 30
 	;cifra zecilor
 	mov edx, 0
 	div ebx
 	add edx, '0'
-	make_text_macro edx, area, 20, 10
+	make_text_macro edx, area, 20, 30
 	;cifra sutelor
 	mov edx, 0
 	div ebx
 	add edx, '0'
-	make_text_macro edx, area, 10, 10
+	make_text_macro edx, area, 10, 30
 	
 	;scriem un mesaj
 	make_text_macro 'B', area, 570, 410
@@ -478,19 +507,13 @@ afisare_litere:
 	make_text_macro 'T', area, 610, 430
 	make_text_macro 'E', area, 620, 430
 	
-	make_text_macro 'S', area, 300, 10
-	make_text_macro 'C', area, 310, 10
-	make_text_macro 'O', area, 320, 10
-	make_text_macro 'R', area, 330, 10
-
-	make_text_macro 'N', area, 300, 30
-	make_text_macro 'E', area, 310, 30
-	make_text_macro 'X', area, 320, 30
-	make_text_macro 'T', area, 330, 30
+	make_text_macro 'S', area, 5, 10
+	make_text_macro 'C', area, 15, 10
+	make_text_macro 'O', area, 25, 10
+	make_text_macro 'R', area, 35, 10
 																										;AICI
 																										;LUCREZ
 																										;ACUM
-	
 matrice_joc:																						
 
 	element 2, 1
@@ -501,13 +524,6 @@ matrice_joc:
 	; call printf
 	; add ESP, 12
 	afisare_matr
-afisare:
-
-	
-pune_patrat:
-	
-	
-stop:
 
 	
 ;			                 																				   				REGIUNEA DE JOC IMPLEMENTATA CU AJUTORUL IMAGINILOR:
@@ -632,7 +648,56 @@ paleta_de_culori:
 	 make_image_macro area, 490, 410, 3
 	 make_image_macro area, 510, 410, 4
 	 make_image_macro area, 530, 410, 5
-   
+	
+
+	orizontala 300, 10, 235, 0
+	orizontala 300, 50, 235, 0
+	verticala 300, 10, 40, 0
+	verticala 535, 10, 40, 0
+	
+;T 
+	square 305,15,00392cfh
+	square 315,15,00392cfh
+	square 325,15,00392cfh
+	square 315,25,00392cfh
+	square 315,35,00392cfh
+
+;E
+	square 340, 15, 07bc043h
+	square 350, 15, 07bc043h
+	square 360, 15, 07bc043h
+	square 340, 35, 07bc043h
+	square 350, 35, 07bc043h
+	square 360, 35, 07bc043h
+; T
+	square 380,15,0f37937h
+	square 390,15,0f37937h
+	square 400,15,0f37937h
+	square 390,25,0f37937h
+	square 390,35,0f37937h
+; R
+	square 420,15,0ef4235h
+	square 430,15,0ef4235h
+	square 440,15,0ef4235h
+	square 420,25,0ef4235h
+	square 430,25,0ef4235h
+	square 420,35,0ef4235h
+	square 440,35,0ef4235h
+
+; I
+	square 460,15,06f3198h
+	square 470,15,06f3198h
+	square 480,15,06f3198h
+	square 470,25,06f3198h
+	square 460,35,06f3198h
+	square 470,35,06f3198h
+	square 480,35,06f3198h
+; S
+	square 500,35,0fef101h
+	square 510,35,0fef101h
+	square 510,25,0fef101h
+	square 520,15,0fef101h
+	square 510,15,0fef101h
 final_draw:
 	popa
 	mov esp, ebp
