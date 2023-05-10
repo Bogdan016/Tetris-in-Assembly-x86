@@ -608,46 +608,46 @@ matrice_joc:
 	verticala 300, 10, 40, 0
 	verticala 535, 10, 40, 0
 ; T 
-	square 305,15,00392cfh
-	square 315,15,00392cfh
-	square 325,15,00392cfh
-	square 315,25,00392cfh
-	square 315,35,00392cfh
+	square 305,15,0ef4235h
+	square 315,15,0ef4235h
+	square 325,15,0ef4235h
+	square 315,25,0ef4235h
+	square 315,35,0ef4235h
 ; E
-	square 340, 15, 07bc043h
-	square 350, 15, 07bc043h
-	square 360, 15, 07bc043h
-	square 340, 35, 07bc043h
-	square 350, 35, 07bc043h
-	square 360, 35, 07bc043h
+	square 340, 15, 0f37937h
+	square 350, 15, 0f37937h
+	square 360, 15, 0f37937h
+	square 340, 35, 0f37937h
+	square 350, 35, 0f37937h
+	square 360, 35, 0f37937h
 ; T
-	square 380,15,0f37937h
-	square 390,15,0f37937h
-	square 400,15,0f37937h
-	square 390,25,0f37937h
-	square 390,35,0f37937h
+	square 380,15, 0fef101h
+	square 390,15, 0fef101h
+	square 400,15, 0fef101h
+	square 390,25, 0fef101h
+	square 390,35, 0fef101h
 ; R
-	square 420,15,0ef4235h
-	square 430,15,0ef4235h
-	square 440,15,0ef4235h
-	square 420,25,0ef4235h
-	square 430,25,0ef4235h
-	square 420,35,0ef4235h
-	square 440,35,0ef4235h
+	square 420,15,07bc043h
+	square 430,15,07bc043h
+	square 440,15,07bc043h
+	square 420,25,07bc043h
+	square 430,25,07bc043h
+	square 420,35,07bc043h
+	square 440,35,07bc043h
 ; I
-	square 460,15,06f3198h
-	square 470,15,06f3198h
-	square 480,15,06f3198h
-	square 470,25,06f3198h
-	square 460,35,06f3198h
-	square 470,35,06f3198h
-	square 480,35,06f3198h
+	square 460,15,00392cfh
+	square 470,15,00392cfh
+	square 480,15,00392cfh
+	square 470,25,00392cfh
+	square 460,35,00392cfh
+	square 470,35,00392cfh
+	square 480,35,00392cfh
 ; S
-	square 500,35,0fef101h
-	square 510,35,0fef101h
-	square 510,25,0fef101h
-	square 520,15,0fef101h
-	square 510,15,0fef101h
+	square 500,35,06f3198h
+	square 510,35,06f3198h
+	square 510,25,06f3198h
+	square 520,15,06f3198h
+	square 510,15,06f3198h
 	
 final_draw:
 	popa
