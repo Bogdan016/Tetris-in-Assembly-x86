@@ -21,22 +21,34 @@ public start
 .data
 ;aici declaram date
 window_title DB "Tetris",0
-area_width EQU 640
+area_width EQU 560
 area_height EQU 490
 area DD 0
+
+include digits.inc
+include letters.inc
+include 1rosu.inc
+include 1albastru.inc
+include 1portocaliu.inc
+include 1verde.inc
+include 1galben.inc
+include 1mov.inc
+include 1alb.inc
+include gri.inc
+include playgroud2.inc
 
 stanga DD 0
 sus DD 0
 val DD 0
 format DB "%d",13,10,0
 format2 DB "(%d, %d) ",13,10,0
-var1 dd 0
-var2 dd 0
-var3 dd 0
+var1 DD 0
+var2 DD 0
+var3 DD 0
 
+loopcol DD 11
+loopline DD 22
 
-loopcol dd 11
-loopline dd 22
 matrice DD  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 		DD  2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2
 		DD  2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2
@@ -60,8 +72,6 @@ matrice DD  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 		DD  2, 5, 5, 5, 4, 4, 1, 1, 1, 2, 3, 2
 		DD  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2
 																		
-		
-		
 square_size EQU 20
 matrix_width EQU 12 * 4
 matrix_height EQU 22 * 4
@@ -82,21 +92,8 @@ arg4 EQU 20
 image_width DD 20
 image_height DD 20
 
-include 1rosu.inc
-include 1albastru.inc
-include 1portocaliu.inc
-include 1verde.inc
-include 1galben.inc
-include 1mov.inc
-include 1alb.inc
-include gri.inc
-include playgroud2.inc
-
-
 symbol_width EQU 10
 symbol_height EQU 20
-include digits.inc
-include letters.inc
 
 .code
 ; procedura make_text afiseaza o litera sau o cifra la coordonatele date
@@ -167,7 +164,7 @@ simbol_pixel_next:
 	ret
 make_text endp
 
-; un macro ca sa apelam mai usor desenarea simbolului
+								;MACRO PENTRU DESENAREA SIMBOLULUI
 make_text_macro macro symbol, drawArea, x, y
 	push y
 	push x
@@ -183,9 +180,8 @@ make_image proc
 	push ebp
 	mov ebp, esp
 	pusha
-								;eax=0 (ROSU are var_0)   eax=1 (ALBASTRU are var_1) eax=2 (PORTOCALIU are var_2) eax=3 (VERDE are var_3) 
-								;eax=4 (GALBEN are var_4) eax=5 (MOV are var_5)      eax=6 (ALB are var_6)        eax=7 (PLAYGROUND?????) 
-								
+								;eax=0 (ALB are var_0)   eax=1 (ALBASTRU are var_1) eax=2 (PORTOCALIU are var_2) eax=3 (VERDE are var_3) 
+								;eax=4 (GALBEN are var_4) eax=5 (MOV are var_5)     eax=6 (ROSU are var_6)       eax=7 (GRI are var_7) 		
 	mov eax, [ebp+arg4]			
 	cmp eax, 0
 	je alb
@@ -210,21 +206,6 @@ make_image proc
 	
 	cmp eax, 7
 	je gri
-	
-	; cmp eax, 8
-	; je playground1
-	
-	; cmp eax, 9
-	; je playground2
-
-	; cmp eax, 10
-	; je playground3
-	
-	; cmp eax, 11
-	; je playground4
-	
-	; cmp eax, 12
-	; je playground5
 	
 rosu: 
 	lea esi, var_0
@@ -256,22 +237,6 @@ alb:
 gri:
     lea esi, var_7
 	jmp draw_image
-	
-; playground1:
-	; lea esi, var_8
-	; jmp draw_image
-; playground2:
-	; lea esi, var_9
-	; jmp draw_image
-; playground3:
-	; lea esi, var_10
-	; jmp draw_image
-; playground4:
-	; lea esi, var_11
-	; jmp draw_image
-; playground5:
-	; lea esi, var_12
-	; jmp draw_image
 	
 draw_image:
 	mov ecx, image_height
@@ -313,7 +278,7 @@ loop_draw_columns:
 	ret
 make_image endp
 
-; simple macro to call the procedure easier																	MACRO-UL PENTRU DESENAREA IMAGINII
+										;MACRO-UL PENTRU DESENAREA IMAGINII
 make_image_macro macro drawArea, x, y, nr_img
 	push nr_img
 	push y
@@ -323,15 +288,15 @@ make_image_macro macro drawArea, x, y, nr_img
 	add esp, 16
 endm
 
-																	;MACRO PENTRU REPREZENTAREA UNEI LINII ORIZONTALE ( FOLOSIT PENTRU CREAREA TABLEI DE JOC )
+										;MACRO PENTRU REPREZENTAREA UNEI LINII ORIZONTALE ( FOLOSIT PENTRU CREAREA TABLEI DE JOC )
 orizontala macro x, y, lungime, culoare
 local bucla1
 
-	mov EAX, y				;EAX = y
+	mov EAX, y			
 	mov EBX, area_width
-	mul EBX					;EAX = y * area_width
-	add EAX, x				;EAX = y * area_width + x
-	lea EAX, [EAX*4]		;inmultim cu 4 deci EAX = ( y * area_width + x ) * 4
+	mul EBX				
+	add EAX, x				
+	lea EAX, [EAX*4]		
 	add EAX, area
 	mov ECX, lungime
 bucla1: 
@@ -339,37 +304,36 @@ bucla1:
 	add EAX, 4
 	loop bucla1
 endm 
-																			;MACRO PENTRU REPREZENTAREA UNEI LINII VERTICALE ( FOLOSIT PENTRU CREAREA TABLEI DE JOC )
+										;MACRO PENTRU REPREZENTAREA UNEI LINII VERTICALE ( FOLOSIT PENTRU CREAREA TABLEI DE JOC )
 verticala macro x, y, lungime, culoare
 local bucla1
 
-	mov EAX, y				;EAX = y
+	mov EAX, y				
 	mov EBX, area_width
-	mul EBX					;EAX = y * area_width
-	add EAX, x				;EAX = y * area_width + x
-	lea EAX, [EAX*4]		;inmultim cu 4 deci EAX = ( y * area_width + x ) * 4
+	mul EBX					
+	add EAX, x				
+	lea EAX, [EAX*4]		
 	add EAX, area
 	mov ECX, lungime
 bucla1: 
 	mov dword ptr [EAX], culoare
 	add EAX, 4 * area_width
 	loop bucla1
-endm 
-																	
-															;MACRO PENTRU REPREZENTAREA UNUI PATRAT, PRIMESTE COORDONATELE X, Y MARIMEA PATRATULUI SI CULOAREA LUI
+endm 							
+										;MACRO PENTRU REPREZENTAREA UNUI PATRAT, PRIMESTE COORDONATELE X, Y SI CULOAREA LUI
 square macro x, y, color
 local loop1, loop2
-	mov eax, y          ; eax = y
-	mov ebx, area_width ; ebx = area_width
-	mul ebx             ; eax = y * area_width
-	add eax, x          ; eax = y * area_width + x
-	lea eax, [eax*4]    ; 
-	add eax, area       ; eax = &area[y * area_width + x]
+	mov eax, y          
+	mov ebx, area_width 
+	mul ebx             
+	add eax, x          
+	lea eax, [eax*4]    
+	add eax, area       
 
-	mov ecx, 10         ; ecx = size
+	mov ecx, 10         
 loop1:
-	push ecx            ; punem contorul pe stiva
-	mov ecx, 10       ; si il initializam din nou cu size ( pentru urmatorul rand )
+	push ecx           
+	mov ecx, 10       
 loop2:
 	mov dword ptr [eax], color 
 	add eax, 4          
@@ -379,8 +343,8 @@ loop2:
 	loop loop1
 endm
 		
-
-element macro pozy, pozx
+										;RETURNEAZA VALOAREA DIN MATRICE DE LA COORDONATELE (POZX, POZY)
+element macro pozy, pozx				
 	mov EAX, pozy
 	mov EBX, matrix_width
 	mul EBX
@@ -392,11 +356,11 @@ element macro pozy, pozx
 	lea EAX, matrice
 	mov EAX, [EAX+EBX]
 endm
-
-pozitie_element macro pozy, pozx
-	mov ecx,pozy
+										;CALCULEAZA POZITIA PE ECRAN AL UNUI ELEMENT DIN MATRICE DE LA COORDONATELE (POZX, POZY)
+pozitie_element macro pozy, pozx		
+	mov ECX, pozy
 	mov EAX, square_size
-	mul ecx
+	mul ECX
 	mov EBX, EAX
 	add EBX, margin_top
 	
@@ -405,6 +369,7 @@ pozitie_element macro pozy, pozx
 	mul ECX
 	add EAX,margin_left
 endm
+										;TRECE PRIN FIECARE ELEMENT DIN MATRICE SI IL AFISEAZA 0-ALB, 1-ALBASTRU, 2-PORTOCALIU, 3-VERDE, 4-GALBEN, 5-MOV, 6-ROSU
 afisare_matr macro 
 ;loop line loop col
 local loop_linie,loop_coloane,terminate_loop
@@ -433,8 +398,8 @@ loop_linie:
 	jmp loop_linie
 	
 	terminate_loop:
-	
 endm
+
 ; functia de desenare - se apeleaza la fiecare click
 ; sau la fiecare interval de 200ms in care nu s-a dat click
 ; arg1 - evt (0 - initializare, 1 - click, 2 - s-a scurs intervalul fara click, 3 - s-a apasat o tasta)
@@ -492,20 +457,20 @@ afisare_litere:
 	make_text_macro edx, area, 10, 30
 	
 	;scriem un mesaj
-	make_text_macro 'B', area, 570, 410
-	make_text_macro 'O', area, 580, 410
-	make_text_macro 'G', area, 590, 410
-	make_text_macro 'D', area, 600, 410
-	make_text_macro 'A', area, 610, 410
-	make_text_macro 'N', area, 620, 410
+	make_text_macro 'B', area, 480, 430
+	make_text_macro 'O', area, 490, 430
+	make_text_macro 'G', area, 500, 430
+	make_text_macro 'D', area, 510, 430
+	make_text_macro 'A', area, 520, 430
+	make_text_macro 'N', area, 530, 430
 	
-	make_text_macro 'I', area, 560, 430
-	make_text_macro 'S', area, 570, 430
-	make_text_macro 'T', area, 580, 430
-	make_text_macro 'R', area, 590, 430
-	make_text_macro 'A', area, 600, 430
-	make_text_macro 'T', area, 610, 430
-	make_text_macro 'E', area, 620, 430
+	make_text_macro 'I', area, 475, 450
+	make_text_macro 'S', area, 485, 450
+	make_text_macro 'T', area, 495, 450
+	make_text_macro 'R', area, 505, 450
+	make_text_macro 'A', area, 515, 450
+	make_text_macro 'T', area, 525, 450
+	make_text_macro 'E', area, 535, 450
 	
 	make_text_macro 'S', area, 5, 10
 	make_text_macro 'C', area, 15, 10
@@ -525,11 +490,9 @@ matrice_joc:
 	; add ESP, 12
 	afisare_matr
 
-	
-;			                 																				   				REGIUNEA DE JOC IMPLEMENTATA CU AJUTORUL IMAGINILOR:
-;	REGIUNEA DE JOC:
+			                 								  ;REGIUNEA DE JOC IMPLEMENTATA CU AJUTORUL IMAGINILOR:
 
-;partea din stanga
+;PATRATELE GRI CARE DELIMITEAZA PARTEA DIN STANGA A TERENULUI
 	 make_image_macro area, 50, 10, 7
 	 make_image_macro area, 50, 30, 7
 	 make_image_macro area, 50, 50, 7
@@ -556,7 +519,8 @@ matrice_joc:
 	 make_image_macro area, 50, 450, 7
 	 make_image_macro area, 70, 450, 7
 	 make_image_macro area, 90, 450, 7
-;Partea de jos:	 
+	 
+;PATRATELE GRI CARE DELIMITEAZA PARTEA DE JOS A TERENULUI 
 	 make_image_macro area, 110, 450, 7
 	 make_image_macro area, 130, 450, 7
 	 make_image_macro area, 150, 450, 7
@@ -566,8 +530,8 @@ matrice_joc:
 	 make_image_macro area, 230, 450, 7
 	 make_image_macro area, 250, 450, 7
 	 make_image_macro area, 270, 450, 7
-
-;PARTEA DIN DREAPTA	 
+	 
+;PATRATELE GRI CARE DELIMITEAZA PARTEA DIN DREAPTA A TERENULUI
 	 make_image_macro area, 270, 10, 7
 	 make_image_macro area, 270, 30, 7
 	 make_image_macro area, 270, 50, 7
@@ -592,22 +556,21 @@ matrice_joc:
 	 make_image_macro area, 270, 430, 7
 	 make_image_macro area, 270, 450, 7
 	 make_image_macro area, 270, 450, 7
-
-;PARTEA DE SUS
-	 make_image_macro area, 70, 10, 7
-	 make_image_macro area, 90, 10, 7
-	 make_image_macro area, 110, 10, 7
-	 make_image_macro area, 130, 10, 7
-	 make_image_macro area, 150, 10, 7
-	 make_image_macro area, 170, 10, 7
-	 make_image_macro area, 190, 10, 7
-	 make_image_macro area, 210, 10, 7
-	 make_image_macro area, 230, 10, 7
-	 make_image_macro area, 250, 10, 7
-	 make_image_macro area, 270, 10, 7
-
-; casute_joc:
+	 
+;PATRATELE GRI CARE DELIMITEAZA PARTEA DE SUS A TERENULUI
+	make_image_macro area, 70, 10, 7
+	make_image_macro area, 90, 10, 7
+	make_image_macro area, 110, 10, 7
+	make_image_macro area, 130, 10, 7
+	make_image_macro area, 150, 10, 7
+	make_image_macro area, 170, 10, 7
+	make_image_macro area, 190, 10, 7
+	make_image_macro area, 210, 10, 7
+	make_image_macro area, 230, 10, 7
+	make_image_macro area, 250, 10, 7
+	make_image_macro area, 270, 10, 7
 	
+;LINIILE CARE DELIMITEAZA CASUTELE DE JOC
 	orizontala 50,50,220,0
 	orizontala 50, 70, 220, 0
 	orizontala 50, 90, 220, 0
@@ -628,7 +591,6 @@ matrice_joc:
 	orizontala 50, 390, 220, 0
 	orizontala 50, 410, 220, 0
 	orizontala 50, 430, 220, 0
-
     verticala 70, 30, 420, 0
     verticala 90, 30, 420, 0
     verticala 110, 30, 420, 0
@@ -639,30 +601,19 @@ matrice_joc:
     verticala 210, 30, 420, 0
     verticala 230, 30, 420, 0
     verticala 250, 30, 420, 0
-   
-paleta_de_culori:
-     
-	 make_image_macro area, 490, 430, 0
-	 make_image_macro area, 510, 430, 1
-	 make_image_macro area, 530, 430, 2
-	 make_image_macro area, 490, 410, 3
-	 make_image_macro area, 510, 410, 4
-	 make_image_macro area, 530, 410, 5
 	
-
+;DREPTUNGHIUL CARE INCONJOARA 'TETRIS'
 	orizontala 300, 10, 235, 0
 	orizontala 300, 50, 235, 0
 	verticala 300, 10, 40, 0
 	verticala 535, 10, 40, 0
-	
-;T 
+; T 
 	square 305,15,00392cfh
 	square 315,15,00392cfh
 	square 325,15,00392cfh
 	square 315,25,00392cfh
 	square 315,35,00392cfh
-
-;E
+; E
 	square 340, 15, 07bc043h
 	square 350, 15, 07bc043h
 	square 360, 15, 07bc043h
@@ -683,7 +634,6 @@ paleta_de_culori:
 	square 430,25,0ef4235h
 	square 420,35,0ef4235h
 	square 440,35,0ef4235h
-
 ; I
 	square 460,15,06f3198h
 	square 470,15,06f3198h
@@ -698,6 +648,7 @@ paleta_de_culori:
 	square 510,25,0fef101h
 	square 520,15,0fef101h
 	square 510,15,0fef101h
+	
 final_draw:
 	popa
 	mov esp, ebp
@@ -735,81 +686,61 @@ end start
 
 ;CULORI: 00392cfh	07bc043h	0ee4035h	0f37736h
 
-
- 			
-		;2 0 0 0 0 0 0 0 0 0 0 2	(50, 30) (70, 30) (90, 30) (110, 30) (130, 30) (150, 30) (170, 30) (190, 30) (210, 30) (230, 30)
-		;2 0 0 0 0 0 0 0 0 0 0 2	(50, 50) (70, 50) (90, 50) (110, 50) (130, 50) (150, 50) (170, 50) (190, 50) (210, 50) (230, 50)
-		;2 0 0 0 0 0 0 0 0 0 0 2	(50, 70) (70, 70) (90, 70) (110, 70) (130, 70) (150, 70) (170, 70) (190, 70) (210, 70) (230, 70)
-		;2 0 0 0 0 0 0 0 0 0 0 2	(50, 90) (70, 90) (90, 90) (110, 90) (130, 90) (150, 90) (170, 90) (190, 90) (210, 90) (230, 90)
-		;2 0 0 0 0 0 0 0 0 0 0 2	(50,110) (70,110) (90,110) (110,110) (130,110) (150,110) (170,110) (190,110) (210,110) (230,110)
-		;2 0 0 0 0 0 0 0 0 0 0 2	(50,130) (70,130) (90,130) (110,130) (130,130) (150,130) (170,130) (190,130) (210,130) (230,130)
-		;2 0 0 0 0 0 0 0 0 0 0 2	(50,150) (70,150) (90,150) (110,150) (130,150) (150,150) (170,150) (190,150) (210,150) (230,150)
-		;2 0 0 0 0 0 0 0 0 0 0 2	(50,170) (70,170) (90,170) (110,170) (130,170) (150,170) (170,170) (190,170) (210,170) (230,170)
-		;2 0 0 0 0 0 0 0 0 0 0 2	(50,190) (70,190) (90,190) (110,190) (130,190) (150,190) (170,190) (190,190) (210,190) (230,190)
-		;2 0 0 0 0 0 0 0 0 0 0 2	(50,210) (70,210) (90,210) (110,210) (130,210) (150,210) (170,210) (190,210) (210,210) (230,210)
-		;2 0 0 0 0 0 0 0 0 0 0 2	(50,230) (70,230) (90,230) (110,230) (130,230) (150,230) (170,230) (190,230) (210,230) (230,230)
-		;2 0 0 0 0 0 0 0 0 0 0 2	(50,250) (70,250) (90,250) (110,250) (130,250) (150,250) (170,250) (190,250) (210,250) (230,250)
-		;2 0 0 0 0 0 0 0 0 0 0 2	(50,270) (70,270) (90,270) (110,270) (130,270) (150,270) (170,270) (190,270) (210,270) (230,270)
-		;2 0 0 0 0 0 0 0 0 0 0 2	(50,290) (70,290) (90,290) (110,290) (130,290) (150,290) (170,290) (190,290) (210,290) (230,290)
-		;2 0 0 0 0 0 0 0 0 0 0 2	(50,310) (70,310) (90,310) (110,310) (130,310) (150,310) (170,310) (190,310) (210,130) (230,310)
-		;2 0 0 0 0 0 0 0 0 0 0 2	(50,330) (70,330) (90,330) (110,330) (130,330) (150,330) (170,330) (190,330) (210,330) (230,330)
-		;2 0 0 0 0 0 0 0 0 0 0 2	(50,350) (70,350) (90,350) (110,350) (130,350) (150,350) (170,350) (190,350) (210,350) (230,350)
-		;2 0 0 0 0 0 0 0 0 0 0 2	(50,370) (70,370) (90,370) (110,370) (130,370) (150,370) (170,370) (190,370) (210,370) (230,370)
-		;2 0 0 0 0 0 0 0 0 0 0 2	(50,390) (70,390) (90,390) (110,390) (130,390) (150,390) (170,390) (190,390) (210,390) (230,390)
-		;2 0 0 0 0 0 0 0 0 0 0 2	(50,410) (70,410) (90,410) (110,410) (130,410) (150,410) (170,410) (190,410) (210,410) (230,410)                                                                                                                         
-		;2 0 0 0 0 0 0 0 0 0 0 2	(50,430) (70,430) (90,430) (110,430) (130,430) (150,430) (170,430) (190,430) (210,430) (230,430) 
-		;2 2 2 2 2 2 2 2 2 2 2 2
-		
-		
-																							MACRO PENTRU REPREZENTAREA UNUI TETROMINO   T   FOLOSIND MACRO-UL SQUARE			
+;CUBURILE DIN DREAPTA JOS   (PALETA DE CULORI)  
+	 ; make_image_macro area, 490, 430, 6
+	 ; make_image_macro area, 510, 430, 1
+	 ; make_image_macro area, 530, 430, 2
+	 ; make_image_macro area, 490, 410, 3
+	 ; make_image_macro area, 510, 410, 4
+	 ; make_image_macro area, 530, 410, 5
+	 
 ; T_tetromino_S1 macro x, y, color;		   _	
-	; square x, y+20, color;				 _|_|_								
+	; square x, y+20, color;		     _|_|_								
     ; square x+20, y+20, color;			|_|_|_|
-    ; square x+40, y+20, color;							!!!	IN LOC DE SQUARE POT PUNE IMAGINE
+    ; square x+40, y+20, color;							
     ; square x+20, y, color
 ; endm
      							   	  
 ; T_tetromino_S2 macro x, y, color;		  _	
-	; square x, y, color;				     |_|_								
-    ; square x, y+20, color;    	    	 |_|_|
-    ; square x, y+40, color;               |_|
+	; square x, y, color;				 |_|_								
+    ; square x, y+20, color;    	     |_|_|
+    ; square x, y+40, color;             |_|
     ; square x+20, y+20, color
 ; endm
 
 ; T_tetromino_S3 macro x, y, color;			   
-	; square x, y, color;			    	 _ _ _								
+	; square x, y, color;			     _ _ _								
     ; square x+20, y,color;	    		|_|_|_|
-    ; square x+40, y, color;		    	  |_|
+    ; square x+40, y, color;		      |_|
     ; square x+20, y+20, color
 ; endm
 
 ; T_tetromino_S4 macro x, y, color
-    ; square x+20, y,    color;			 	 _
-    ; square x,    y+20,  color;			   _|_|
+    ; square x+20, y,    color;			 	   _
+    ; square x,    y+20,  color;			 _|_|
     ; square x+20, y+20,  color;            |_|_|
     ; square x+20, y+40,  color;              |_|
 ; endm
-
-																							MACRO PENTRU REPREZENTAREA UNUI TETROMINO   Z   FOLOSIND MACRO-UL SQUARE
+																							
 ; Z_tetromino_S1 macro x, y, color
     ; square x, y, color;				      _ _		
     ; square x+20, y, color;			     |_|_|_
-    ; square x+20, y+20, color;		       |_|_|
+    ; square x+20, y+20, color;		           |_|_|
     ; square x+40, y+20, color;
 ; endm		
 
 ; Z_tetromino_S2 macro x, y, color;    	      		
     ; square x+20, y, color;		            _
     ; square x, y+20, color;		   	 	  _|_|
-    ; square x+20, y+20, color;	  	   	 |_|_|
+    ; square x+20, y+20, color;	  	   	     |_|_|
     ; square x, y+40, color;				 |_|
 ; endm									
-																							MACRO PENTRU REPREZENTAREA UNUI TETROMINO   I   FOLOSIND MACRO-UL SQUARE
-; I_tetromino_S1 macro x, y, color;         _
+																						
+; I_tetromino_S1 macro x, y, color;           _
     ; square x, y, color;					 |_|
     ; square x, y+20, color;				 |_|	
-    ; square x, y+40, color;          	 |_|
-    ; square x, y+60, color;          	 |_|
+    ; square x, y+40, color;          	     |_|
+    ; square x, y+60, color;          	     |_|
 ; endm
 
 ; I_tetromino_S2 macro x, y, color
@@ -818,8 +749,7 @@ end start
     ; square x+40, y, color;
     ; square x+60, y, color;
 ; endm
-
-																							MACRO PENTRU REPREZENTAREA UNUI TETROMINO   O   FOLOSIND MACRO-UL SQUARE
+																			
 ; O_tetromino macro x, y, color
     ; square x, y, color;					 _ _
     ; square x+20, y, color;				|_|_|
