@@ -27,12 +27,12 @@ area DD 0
 
 include digits.inc
 include letters.inc
-include 1rosu.inc
-include 1albastru.inc
-include 1portocaliu.inc
-include 1verde.inc
-include 1galben.inc
-include 1mov.inc
+include arosu.inc
+include aalbastru.inc
+include aportocaliu.inc
+include averde.inc
+include agalben.inc
+include amov.inc
 include 1alb.inc
 include gri.inc
 include playgroud2.inc
@@ -52,7 +52,7 @@ loopcol DD 11
 loopline DD 22
 
 matrice DD  -1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, -1
-		DD  -1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, -1
+		DD  -1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, -1
 		DD  -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1
 		DD  -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1
 		DD  -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1
@@ -166,7 +166,7 @@ simbol_pixel_next:
 	ret
 make_text endp
 
-								;MACRO PENTRU DESENAREA SIMBOLULUI
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;MACRO PENTRU DESENAREA SIMBOLULUI
 make_text_macro macro symbol, drawArea, x, y
 	push y
 	push x
@@ -176,8 +176,7 @@ make_text_macro macro symbol, drawArea, x, y
 	add esp, 16
 endm
 
-
-								;PROCEDURA PENTRU DESENAREA IMAGINII
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;PROCEDURA PENTRU DESENAREA IMAGINII
 make_image proc
 	push ebp
 	mov ebp, esp
@@ -283,7 +282,7 @@ loop_draw_columns:
 	ret
 make_image endp
 
-										;MACRO-UL PENTRU DESENAREA IMAGINII
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;MACRO-UL PENTRU DESENAREA IMAGINII
 make_image_macro macro drawArea, x, y, nr_img
 	push nr_img
 	push y
@@ -293,7 +292,7 @@ make_image_macro macro drawArea, x, y, nr_img
 	add esp, 16
 endm
 
-										;MACRO PENTRU REPREZENTAREA UNEI LINII ORIZONTALE ( FOLOSIT PENTRU CREAREA TABLEI DE JOC )
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;MACRO PENTRU REPREZENTAREA UNEI LINII ORIZONTALE ( FOLOSIT PENTRU CREAREA TABLEI DE JOC )
 orizontala macro x, y, lungime, culoare
 local bucla1
 
@@ -309,7 +308,7 @@ bucla1:
 	add EAX, 4
 	loop bucla1
 endm 
-										;MACRO PENTRU REPREZENTAREA UNEI LINII VERTICALE ( FOLOSIT PENTRU CREAREA TABLEI DE JOC )
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;MACRO PENTRU REPREZENTAREA UNEI LINII VERTICALE ( FOLOSIT PENTRU CREAREA TABLEI DE JOC )
 verticala macro x, y, lungime, culoare
 local bucla1
 
@@ -325,7 +324,7 @@ bucla1:
 	add EAX, 4 * area_width
 	loop bucla1
 endm 							
-										;MACRO PENTRU REPREZENTAREA UNUI PATRAT, PRIMESTE COORDONATELE X, Y SI CULOAREA LUI
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;MACRO PENTRU REPREZENTAREA UNUI PATRAT, PRIMESTE COORDONATELE X, Y SI CULOAREA LUI
 square macro x, y, color
 local loop1, loop2
 	mov eax, y          
@@ -348,7 +347,7 @@ loop2:
 	loop loop1
 endm
 		
-										;RETURNEAZA VALOAREA DIN MATRICE DE LA COORDONATELE (POZX, POZY)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;RETURNEAZA VALOAREA DIN MATRICE DE LA COORDONATELE (POZX, POZY)
 element macro pozy, pozx				
 	mov EAX, pozy
 	mov EBX, matrix_width
@@ -362,19 +361,21 @@ element macro pozy, pozx
 	mov EAX, [EAX+EBX]
 endm
 
-modif_element macro pozy, pozx,cod			
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;CALCULEAZA POZITIA URMATORULUI RAND SI MUTA ACOLO ELEMENTUL 
+modif_element macro pozy, pozx, cod			
 	mov EAX, pozy
 	mov EBX, matrix_width
 	mul EBX
 	mov EBX, EAX 
 	mov EAX, pozx
-	mov ECX,4
+	mov ECX, 4
 	mul ECX
 	add EBX, EAX
 	mov EAX,cod
-	mov matrice[EBX],EAX; 
+	mov matrice[EBX],EAX				;pune la pozitia calculata din matrice codul patratului 
 endm
-										;CALCULEAZA POZITIA PE ECRAN AL UNUI ELEMENT DIN MATRICE DE LA COORDONATELE (POZX, POZY)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;CALCULEAZA POZITIA PE ECRAN AL UNUI ELEMENT DIN MATRICE DE LA COORDONATELE (POZX, POZY)
 pozitie_element macro pozy, pozx		
 	mov ECX, pozy
 	mov EAX, square_size
@@ -387,7 +388,8 @@ pozitie_element macro pozy, pozx
 	mul ECX
 	add EAX,margin_left
 endm
-										;TRECE PRIN FIECARE ELEMENT DIN MATRICE SI IL AFISEAZA 0-ALB, 1-ALBASTRU, 2-PORTOCALIU, 3-VERDE, 4-GALBEN, 5-MOV, 6-ROSU
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;TRECE PRIN FIECARE ELEMENT DIN MATRICE SI IL AFISEAZA 0-ALB, 1-ALBASTRU, 2-PORTOCALIU, 
+																															  ;3-VERDE, 4-GALBEN, 5-MOV, 6-ROSU
 afisare_matr macro 
 
 local loop_linie,loop_coloana,terminate_loop,stop
@@ -400,19 +402,18 @@ loop_linie:
 	loop_coloana:
 	
 	 pozitie_element loopline,loopcol
-	 mov var1,EAX						;pune in var1 pozitia lui x
-	 mov var2,EBX						;pune in var2 pozitia lui y
+	 mov var1, EAX						;pune in var1 pozitia lui x
+	 mov var2, EBX						;pune in var2 pozitia lui y
 	 
-	 element loopline,loopcol
-	 mov var3,EAX						;pune in var3 valoarea de la pozitia x,y
-	 mov EBX,7
-	 mov EDX,0
-	 div EBX; ba gen tu cand imparti EAX la 7 ramane catul in EAX si restul in EDX stiu
+	 element loopline, loopcol
+	 mov var3, EAX						;pune in var3 valoarea de la pozitia x,y
+	 mov EBX, 7							;pune in EBX 7 (numarul de culori)
+	 mov EDX, 0							;initializam EDX cu 0
+	 div EBX							;impartim EAX la 7 si restul ramane in EDX (EDX<-var3 % 7)
 	 mov var3,EDX
 	 cmp var3, 0						
 	 jg stop
-										;cum pun counterul?
-										;cum pun figurile? cum reprezint figurile?	
+
 	 stop:
 	 make_image_macro area,var1,var2,var3  
 	 dec loopcol
@@ -428,6 +429,8 @@ loop_linie:
 	
 	terminate_loop:
 endm
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;VERIFICA DACA UN ELEMENT DE SUB ELEMENTUL NOSTRU E 0 SAU NU
 verificare_mutare_bloc macro cod
 local loop_linie,loop_coloana,terminate_loop,stop,mutam	
 
@@ -439,22 +442,22 @@ loop_linie:
 	loop_coloana:
 	
 	 pozitie_element loopline,loopcol
-	 mov var1,EAX						;pune in var1 pozitia lui x
-	 mov var2,EBX						;pune in var2 pozitia lui y
+	 mov var1,EAX						
+	 mov var2,EBX						
 	 
 	 element loopline,loopcol
-	 mov var3,EAX						;pune in var3 valoarea de la pozitia x,y  
-	 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	 mov var3,EAX						 
+;--------------------------------
 
-	mov EAX,cod
-	cmp var3,EAX
+	mov EAX, cod
+	cmp var3, EAX				
 	jne mutam
 	
-	mov mutare_bloc_ok,0
+	mov mutare_bloc_ok, 0		;variabila bool care ne spune daca e ok sau nu sa mutam blocul
 	jmp terminate_loop
 	
 	mutam:
-	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;--------------------------------
 	 dec loopcol
 	 cmp loopcol,0
 	 jge loop_coloana
@@ -468,7 +471,7 @@ loop_linie:
 	
 	terminate_loop:
 endm
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;MUTA BLOCUL MAI JOS 
 mutare_bloc macro cod
 
 local loop_linie,loop_coloana,terminate_loop,stop,nu_mutam
@@ -486,29 +489,27 @@ loop_linie:
 	 
 	 element loopline,loopcol
 	 mov var3,EAX						;pune in var3 valoarea de la pozitia x,y  
-	 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-	
+;--------------------------------
 	cmp var3,0
+	jne nu_mutam						;daca nu e 0 nu putem muta
+	
+	mov EAX, loopline					;punem in var4 linia
+	mov var4, EAX
+	sub var4, 1
+	element var4, loopcol				;valoarea de la linia-1, coloana
+	mov var4, EAX						;punem vechea linie in var4
+	
+	mov EAX, cod						;verificare pentru a nu se "rupe" cuburile din figura
+	cmp var4, EAX
 	jne nu_mutam
 	
-	mov EAX,loopline
-	mov var4,EAX
-	sub var4,1
-	element var4,loopcol
-	mov var4,EAX
-	
-	mov EAX,cod
-	cmp var4,EAX
-	jne nu_mutam
-	
-	modif_element loopline,loopcol,cod
-	dec loopline
-	modif_element loopline,loopcol,0
+	modif_element loopline, loopcol, cod	;muta patratul la pozitia de mai jos
+	dec loopline							
+	modif_element loopline, loopcol, 0		;pune patratul cu 0 la pozitia anterioara
 	inc loopline
 	
 	nu_mutam:
-	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;--------------------------------
 	 dec loopcol
 	 cmp loopcol,0
 	 jge loop_coloana
@@ -522,6 +523,8 @@ loop_linie:
 	
 	terminate_loop:
 endm
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;VERIFICA DACA SE POATE MUTA MAI JOS SI MUTA BLOCUL
 manipulare_miscare macro cod
 local nu_putem_muta
 	verificare_mutare_bloc cod
@@ -532,40 +535,84 @@ local nu_putem_muta
 	
 	nu_putem_muta:
 endm
-
-desenare_figura_1 macro cod
-modif_element 0,5,cod
-modif_element 0,6,cod
-modif_element 0,7,cod
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+desenare_T macro cod
+	modif_element 1,1, cod
+	modif_element 0,2, cod
+	modif_element 1,3, cod
+	modif_element 1,2, cod
 endm
 
+desenare_O macro cod
+	modif_element 1,1, cod
+	modif_element 2,1, cod
+	modif_element 1,2, cod
+	modif_element 2,2, cod
+endm
+
+desenare_I macro cod
+	modif_element 0,1, cod
+	modif_element 1,1, cod
+	modif_element 2,1, cod
+	modif_element 3,1, cod
+endm
+
+desenare_Z macro cod
+	modif_element 1,1, cod
+	modif_element 1,2, cod
+	modif_element 2,2, cod
+	modif_element 2,3, cod
+endm
+
+desenare_L macro cod
+	modif_element 1,1, cod
+	modif_element 2,2, cod
+	modif_element 2,1, cod
+	modif_element 2,3, cod
+endm
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 manipulare_cod macro cod
-local miscare_continue,nu_e_figura_1 ;dam un lol mai incolo? corect, no bine ma, ne auzim nb
-cmp mutare_bloc_ok,0
+local miscare_continue, not1, not2, not3, not4, not5, inceput
+	
+	inceput:
+	cmp mutare_bloc_ok, 0
+	jne miscare_continue
 
-jne miscare_continue
-
-inc cod
-mov EBX,cod
-
-mov EAX,EBX
- mov EBX,5
- div EBX
-
-cmp EDX,2   
-jne nu_e_figura_1
-
-desenare_figura_1 cod
-
-nu_e_figura_1:
-
-
-mov mutare_bloc_ok,1
-
+	inc cod
+	
+	mov EAX, cod
+	mov EBX, 5
+	div EBX
+	
+	cmp EDX, 2				;de ce nu se poate incepe de la 1?   						
+	jne not1
+	desenare_L cod
+not1:
+	cmp EDX, 3
+	jne not2
+	desenare_O cod
+not2:
+	cmp EDX, 4
+	jne not3
+	desenare_I cod
+not3:
+	cmp EDX, 5
+	jne not4
+	desenare_Z cod
+not4:
+	cmp EDX, 6
+	jne not5
+	desenare_L cod
+not5:
+	mov mutare_bloc_ok,1
+	jmp inceput				;e bine?
+	
 miscare_continue:
-manipulare_miscare cod
-
+	manipulare_miscare cod
+	
 endm
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 ; functia de desenare - se apeleaza la fiecare click
 ; sau la fiecare interval de 200ms in care nu s-a dat click
 ; arg1 - evt (0 - initializare, 1 - click, 2 - s-a scurs intervalul fara click, 3 - s-a apasat o tasta)
@@ -647,19 +694,14 @@ afisare_litere:
 																										;ACUM
 matrice_joc:																						
 
-	element 2, 1
-	; pozitie_element 1, 0 
-	; push EAX
-	; push EBX
-	; push offset format2
-	; call printf
-	; add ESP, 12
+	element 0, 0
 	manipulare_cod cod_actual
 	afisare_matr
 
-	;REGIUNEA DE JOC IMPLEMENTATA CU AJUTORUL IMAGINILOR:
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;REGIUNEA DE JOC IMPLEMENTATA CU AJUTORUL IMAGINILOR:
 
-;PATRATELE GRI CARE DELIMITEAZA PARTEA DIN STANGA A TERENULUI
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;PATRATELE GRI CARE DELIMITEAZA PARTEA DIN STANGA A TERENULUI
 	 make_image_macro area, 50, 10, 7 
 	 make_image_macro area, 50, 30, 7
 	 make_image_macro area, 50, 50, 7
@@ -687,7 +729,7 @@ matrice_joc:
 	 make_image_macro area, 70, 450, 7
 	 make_image_macro area, 90, 450, 7
 	 
-;PATRATELE GRI CARE DELIMITEAZA PARTEA DE JOS A TERENULUI 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;PATRATELE GRI CARE DELIMITEAZA PARTEA DE JOS A TERENULUI 
 	 make_image_macro area, 110, 450, 7
 	 make_image_macro area, 130, 450, 7
 	 make_image_macro area, 150, 450, 7
@@ -698,7 +740,7 @@ matrice_joc:
 	 make_image_macro area, 250, 450, 7
 	 make_image_macro area, 270, 450, 7
 	 
-;PATRATELE GRI CARE DELIMITEAZA PARTEA DIN DREAPTA A TERENULUI
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;PATRATELE GRI CARE DELIMITEAZA PARTEA DIN DREAPTA A TERENULUI
 	 make_image_macro area, 270, 10, 7
 	 make_image_macro area, 270, 30, 7
 	 make_image_macro area, 270, 50, 7
@@ -724,7 +766,7 @@ matrice_joc:
 	 make_image_macro area, 270, 450, 7
 	 make_image_macro area, 270, 450, 7
 	 
-;PATRATELE GRI CARE DELIMITEAZA PARTEA DE SUS A TERENULUI
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;PATRATELE GRI CARE DELIMITEAZA PARTEA DE SUS A TERENULUI
 	make_image_macro area, 70, 10, 7
 	make_image_macro area, 90, 10, 7
 	make_image_macro area, 110, 10, 7
@@ -737,7 +779,7 @@ matrice_joc:
 	make_image_macro area, 250, 10, 7
 	make_image_macro area, 270, 10, 7
 	
-;LINIILE CARE DELIMITEAZA CASUTELE DE JOC
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;LINIILE CARE DELIMITEAZA CASUTELE DE JOC
 	orizontala 50,50,220,0
 	orizontala 50, 70, 220, 0
 	orizontala 50, 90, 220, 0
@@ -769,31 +811,31 @@ matrice_joc:
     verticala 230, 30, 420, 0
     verticala 250, 30, 420, 0
 	
-;DREPTUNGHIUL CARE INCONJOARA 'TETRIS'
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;DREPTUNGHIUL CARE INCONJOARA 'TETRIS'
 	orizontala 300, 10, 235, 0
 	orizontala 300, 50, 235, 0
 	verticala 300, 10, 40, 0
 	verticala 535, 10, 40, 0
-; T 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; T 
 	square 305,15,0ef4235h
 	square 315,15,0ef4235h
 	square 325,15,0ef4235h
 	square 315,25,0ef4235h
 	square 315,35,0ef4235h
-; E
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; E
 	square 340, 15, 0f37937h
 	square 350, 15, 0f37937h
 	square 360, 15, 0f37937h
 	square 340, 35, 0f37937h
 	square 350, 35, 0f37937h
 	square 360, 35, 0f37937h
-; T
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; T
 	square 380,15, 0fef101h
 	square 390,15, 0fef101h
 	square 400,15, 0fef101h
 	square 390,25, 0fef101h
 	square 390,35, 0fef101h
-; R
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; R
 	square 420,15,07bc043h
 	square 430,15,07bc043h
 	square 440,15,07bc043h
@@ -801,7 +843,7 @@ matrice_joc:
 	square 430,25,07bc043h
 	square 420,35,07bc043h
 	square 440,35,07bc043h
-; I
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; I
 	square 460,15,00392cfh
 	square 470,15,00392cfh
 	square 480,15,00392cfh
@@ -809,7 +851,7 @@ matrice_joc:
 	square 460,35,00392cfh
 	square 470,35,00392cfh
 	square 480,35,00392cfh
-; S
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; S
 	square 500,35,06f3198h
 	square 510,35,06f3198h
 	square 510,25,06f3198h
