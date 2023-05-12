@@ -621,7 +621,7 @@ local miscare_continue,not1, not2, not3, not4, not5
 	mov EBX, 5
 	div EBX
 
-not0:
+
 	cmp EDX, 0				 						
 	jne not1
 	desenare_T cod			;de ce nu ia 0,3 sau 4?
@@ -806,6 +806,54 @@ loop_linie:
 	terminate_loop:
 	
 endm 
+
+figura_urmatoare macro cod
+local not1, not2, not3, not4, not5
+	mov EDX, 0
+	mov EAX, cod
+	inc EAX
+	mov EBX, 5
+	div EBX
+	
+	mov EAX,COD
+	inc eax
+	
+	cmp EDX, 0				 						
+	jne not1
+	make_image_macro area, 365, 95, 0
+	make_image_macro area, 385, 95, 0
+	make_image_macro area, 405, 95, 0
+	make_image_macro area, 425, 95, 0
+	
+	make_image_macro area, 365, 75, 0
+	make_image_macro area, 405, 75, 0
+	make_image_macro area, 425, 75, 0
+	make_image_macro area, 385, 75, 0
+	
+	make_image_macro area, 365, 95, EAX
+	make_image_macro area, 385, 95, EAX
+	make_image_macro area, 405, 95, EAX
+	make_image_macro area, 425, 95, EAX
+	
+	make_image_macro area, 365, 75, EAX
+	make_image_macro area, 405, 75, EAX
+	make_image_macro area, 425, 75, EAX
+	make_image_macro area, 385, 75, EAX
+not1:
+	cmp EDX, 1
+	jne not2
+not2:
+	cmp EDX, 2
+	jne not3
+not3:
+	cmp EDX, 3
+	jne not4
+not4:
+	cmp EDX, 4
+	jne not5
+	
+not5:
+endm
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ; functia de desenare - se apeleaza la fiecare click
@@ -924,7 +972,7 @@ matrice_joc:
 	element 0, 0
 	manipulare_cod cod_actual
 	afisare_matr
-	;figura_urmatoare cod_actual
+	figura_urmatoare cod_actual
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;REGIUNEA DE JOC IMPLEMENTATA CU AJUTORUL IMAGINILOR:
 
 
@@ -1044,15 +1092,15 @@ matrice_joc:
 	verticala 360, 70, 50, 0
 	verticala 450, 70, 50, 0
 	
-	make_image_macro area, 365, 95, 1
-	make_image_macro area, 385, 95, 1
-	make_image_macro area, 405, 95, 1
-	make_image_macro area, 425, 95, 1
+	; make_image_macro area, 365, 95, 1
+	; make_image_macro area, 385, 95, 1
+	; make_image_macro area, 405, 95, 1
+	; make_image_macro area, 425, 95, 1
 	
-	make_image_macro area, 365, 75, 1
-	make_image_macro area, 405, 75, 1
-	make_image_macro area, 425, 75, 1
-	make_image_macro area, 385, 75, 1
+	; make_image_macro area, 365, 75, 1
+	; make_image_macro area, 405, 75, 1
+	; make_image_macro area, 425, 75, 1
+	; make_image_macro area, 385, 75, 1
 	
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;DREPTUNGHIUL PENTRU 'SCOR'	
 	orizontala 360, 130, 50, 0
