@@ -9,6 +9,7 @@ Tetris has very simple rules: you can only move the pieces in specific ways; you
 Rules give much needed structure to our play. A completely random environment offers no clue as to how to play and would be incredibly frustrating. How fortunate it is, then, that Tetris’s three rules are what shape it into such an award-winning game.
 ![Cerinta](https://user-images.githubusercontent.com/76945445/237056569-9c204c8b-2cc5-4c7a-9a93-d573f9c762b6.png)
 
+![image](https://github.com/Bogdan016/Tetris/assets/76945445/f609e5d4-170f-4946-91ba-53f9cfa46cc5)
 
 
 The playground:
