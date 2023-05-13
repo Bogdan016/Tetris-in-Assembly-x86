@@ -47,6 +47,7 @@ var2 DD 0
 var3 DD 0
 var4 DD 0
 cod_actual DD 0
+cod_urmator DD 0
 mutare_bloc_ok dd 1
 loopcol DD 11
 loopline DD 22
@@ -567,12 +568,11 @@ local nu_putem_muta
 endm
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 desenare_T macro cod
-	modif_element 1,1, cod			;y+1,x+1
-	modif_element 0,2, cod			;y,x+2
-	modif_element 1,3, cod			;
-	modif_element 1,2, cod			;
+	modif_element 1,5, cod			
+	modif_element 0,6, cod			
+	modif_element 1,7, cod			
+	modif_element 1,6, cod			
 	
-
 endm
 
 desenare_O macro cod
@@ -584,26 +584,26 @@ desenare_O macro cod
 endm
 
 desenare_I macro cod
-	modif_element 0,1, cod
-	modif_element 1,1, cod
-	modif_element 2,1, cod
-	modif_element 3,1, cod
+	modif_element 0,5, cod
+	modif_element 1,5, cod
+	modif_element 2,5, cod
+	modif_element 3,5, cod
 
 endm
 
 desenare_Z macro cod
-	modif_element 1,1, cod
-	modif_element 1,2, cod
-	modif_element 2,2, cod
-	modif_element 2,3, cod
+	modif_element 1,5, cod
+	modif_element 1,6, cod
+	modif_element 2,6, cod
+	modif_element 2,7, cod
 
 endm
 
 desenare_L macro cod
-	modif_element 1,1, cod
-	modif_element 2,2, cod
-	modif_element 2,1, cod
-	modif_element 2,3, cod
+	modif_element 1,5, cod
+	modif_element 2,6, cod
+	modif_element 2,5, cod
+	modif_element 2,7, cod
 
 endm
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -624,7 +624,7 @@ local miscare_continue,not1, not2, not3, not4, not5
 
 	cmp EDX, 0				 						
 	jne not1
-	desenare_T cod			;de ce nu ia 0,3 sau 4?
+	desenare_T cod			
 not1:
 	cmp EDX, 1
 	jne not2
@@ -691,7 +691,7 @@ loop_linie:
 	
 	terminate_loop:
 endm
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 deplasare_dreapta macro cod
 
 local loop_linie,loop_coloana,terminate_loop,stop,nu_mutam
@@ -748,7 +748,7 @@ loop_linie:
 	terminate_loop:
 	
 endm 
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 deplasare_stanga macro cod
 
 local loop_linie,loop_coloana,terminate_loop,stop,nu_mutam
@@ -806,53 +806,66 @@ loop_linie:
 	terminate_loop:
 	
 endm 
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 figura_urmatoare macro cod
 local not1, not2, not3, not4, not5
 	mov EDX, 0
 	mov EAX, cod
 	inc EAX
+	mov cod_urmator, EAX
+	add cod_urmator, 1
 	mov EBX, 5
 	div EBX
 	
-	mov EAX,COD
+	mov EAX, cod
 	inc eax
 	
-	cmp EDX, 0				 						
-	jne not1
 	make_image_macro area, 365, 95, 0
 	make_image_macro area, 385, 95, 0
 	make_image_macro area, 405, 95, 0
 	make_image_macro area, 425, 95, 0
-	
 	make_image_macro area, 365, 75, 0
 	make_image_macro area, 405, 75, 0
 	make_image_macro area, 425, 75, 0
 	make_image_macro area, 385, 75, 0
 	
-	make_image_macro area, 365, 95, EAX
-	make_image_macro area, 385, 95, EAX
-	make_image_macro area, 405, 95, EAX
-	make_image_macro area, 425, 95, EAX
+	cmp EDX, 0				 						
+	jne not1
+	make_image_macro area, 365, 95, 7
+	make_image_macro area, 385, 95, 7
+	make_image_macro area, 405, 95, 7
+	make_image_macro area, 385, 75, 7
 	
-	make_image_macro area, 365, 75, EAX
-	make_image_macro area, 405, 75, EAX
-	make_image_macro area, 425, 75, EAX
-	make_image_macro area, 385, 75, EAX
 not1:
 	cmp EDX, 1
 	jne not2
+	make_image_macro area, 365, 95, 7
+	make_image_macro area, 385, 95, 7
+	make_image_macro area, 365, 75, 7
+	make_image_macro area, 385, 75, 7
 not2:
 	cmp EDX, 2
 	jne not3
+	make_image_macro area, 365, 95, 7
+	make_image_macro area, 385, 95, 7
+	make_image_macro area, 405, 95, 7
+	make_image_macro area, 425, 95, 7
 not3:
 	cmp EDX, 3
 	jne not4
+	make_image_macro area, 365, 75, 7
+	make_image_macro area, 385, 75, 7
+	make_image_macro area, 385, 95, 7
+	make_image_macro area, 405, 95, 7
 not4:
 	cmp EDX, 4
 	jne not5
-	
+	make_image_macro area, 365, 75, 7
+	make_image_macro area, 365, 95, 7
+	make_image_macro area, 385, 95, 7
+	make_image_macro area, 405, 95, 7
 not5:
+
 endm
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -896,11 +909,11 @@ evt_timer:
 	
 evt_tasta:
 	mov eax,[EBP+arg2]
-	cmp EAX,41h ;pentru A
+	cmp EAX,41h 		;codul pentru A
 	jne urmatorul
 	deplasare_stanga cod_actual
 	urmatorul:
-	cmp EAX,44h ; pentru D
+	cmp EAX,44h 		;codul pentru D
 	jne afisare_litere
 	deplasare_dreapta cod_actual
 afisare_litere:
