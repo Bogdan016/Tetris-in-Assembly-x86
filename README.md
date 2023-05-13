@@ -15,11 +15,13 @@ Rules give much needed structure to our play. A completely random environment of
 The playground:
 
 ![playgroud2](https://user-images.githubusercontent.com/76945445/237032975-48becfaf-104d-4645-ad12-c289640ce13e.png)
-Tetrominos:
-![1alb](https://user-images.githubusercontent.com/76945445/237045207-8dbb3ae0-6f9c-403b-934f-01ce30d623e5.png)
-![1albastru](https://user-images.githubusercontent.com/76945445/237045215-3f4c2082-6c15-462b-a1b7-161de257267f.png)
-![1galben](https://user-images.githubusercontent.com/76945445/237045216-0583b973-db78-4617-afbb-9844f4ee99df.png)
-![1mov](https://user-images.githubusercontent.com/76945445/237045218-f464261e-f2fd-4469-ab1d-dc93bf0db35c.png)
-![1portocaliu](https://user-images.githubusercontent.com/76945445/237045221-4ee95833-b9c7-4ba5-928c-7a9a2fb17b6e.png)
-![1rosu](https://user-images.githubusercontent.com/76945445/237045224-1893f274-c347-4abd-aad1-64c3980cd535.png)
-![1verde](https://user-images.githubusercontent.com/76945445/237045227-f55f03da-ea01-47bb-b8bc-e408664e0ab4.png)
+PIECES:
+
+![1alb](https://github.com/Bogdan016/Tetris/assets/76945445/616b2d3d-39ce-4ece-8170-ceaa6d6f3ca3)
+![aalbastru](https://github.com/Bogdan016/Tetris/assets/76945445/22880111-4f98-4b71-9af6-645daa056378)
+![agalben](https://github.com/Bogdan016/Tetris/assets/76945445/8efcf963-3ea0-44db-9427-17262ad3c58d)
+![amov](https://github.com/Bogdan016/Tetris/assets/76945445/499c00fa-15e2-4321-ac42-0d4fa9390b05)
+![aportocaliu](https://github.com/Bogdan016/Tetris/assets/76945445/0b370111-b876-4db6-b082-65f5417f52c0)
+![arosu](https://github.com/Bogdan016/Tetris/assets/76945445/c4fd0196-0eff-46c5-977a-1d01dc48aa39)
+![averde](https://github.com/Bogdan016/Tetris/assets/76945445/714c2aa7-2c43-422e-8197-32126ccb3562)
+![gri](https://github.com/Bogdan016/Tetris/assets/76945445/3953b6af-2910-4d38-82a9-654434e2d1e7)
