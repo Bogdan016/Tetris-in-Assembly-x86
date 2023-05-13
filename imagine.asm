@@ -654,44 +654,44 @@ endm
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-eliminare_rand macro cod
-local loop_linie,loop_coloana,terminate_loop,final	
+; eliminare_rand macro cod
+; local loop_linie,loop_coloana,terminate_loop,final	
 
-mov loopline, 20
-mov loopcol, 11
-mov mutare_bloc_ok, 1
-loop_linie:
+; mov loopline, 20
+; mov loopcol, 11
+; mov mutare_bloc_ok, 1
+; loop_linie:
 
-	loop_coloana:
+	; loop_coloana:
 	
-	 pozitie_element loopline,loopcol
-	 mov var1,EAX						
-	 mov var2,EBX						
+	 ; pozitie_element loopline,loopcol
+	 ; mov var1,EAX						
+	 ; mov var2,EBX						
 	 
-	 element loopline,loopcol
-	 mov var3,EAX						 
-;--------------------------------
-	 cmp loopcol, 0
-	 jg final
-	 cmp loopline, 0
-	 jg final
-	 mov loopline, 0				;NU STIU DACA E BINE
-	 final:
-;--------------------------------
-	 dec loopcol
-	 cmp loopcol,0
-	 jge loop_coloana
+	 ; element loopline,loopcol
+	 ; mov var3,EAX						 
+; --------------------------------
+	 ; cmp loopcol, 0
+	 ; jg final
+	 ; cmp loopline, 0
+	 ; jg final
+	 ; mov loopline, 0				;NU STIU DACA E BINE
+	 ; final:
+; --------------------------------
+	 ; dec loopcol
+	 ; cmp loopcol,0
+	 ; jge loop_coloana
 	 
-	mov loopcol,11
-	dec loopline
+	; mov loopcol,11
+	; dec loopline
 	
-	cmp loopline,20
-	jnge terminate_loop
-	jmp loop_linie
+	; cmp loopline,20
+	; jnge terminate_loop
+	; jmp loop_linie
 	
-	terminate_loop:
-endm
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	; terminate_loop:
+; endm
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;MUTA FIGURA LA DREAPTA
 deplasare_dreapta macro cod
 
 local loop_linie,loop_coloana,terminate_loop,stop,nu_mutam
@@ -711,7 +711,7 @@ loop_linie:
 	 mov var3,EAX						;pune in var3 valoarea de la pozitia x,y  
 ;--------------------------------
 	cmp var3,0
-	je nu_mutam						;daca nu e 0 nu putem muta
+	je nu_mutam							;daca nu e 0 nu putem muta
 	
 	mov eax,cod
 	cmp var3,eax
@@ -748,7 +748,7 @@ loop_linie:
 	terminate_loop:
 	
 endm 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;MUTA FIGURA LA STANGA 
 deplasare_stanga macro cod
 
 local loop_linie,loop_coloana,terminate_loop,stop,nu_mutam
@@ -768,7 +768,7 @@ loop_linie:
 	 mov var3,EAX						;pune in var3 valoarea de la pozitia x,y  
 ;--------------------------------
 	cmp var3,0
-	je nu_mutam						;daca nu e 0 nu putem muta
+	je nu_mutam							;daca nu e 0 nu putem muta
 	
 	mov eax,cod
 	cmp var3,eax
@@ -806,7 +806,7 @@ loop_linie:
 	terminate_loop:
 	
 endm 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;DETERMINA SI AFISEAZA PE ECRAN LA LOCUL STABILIT CARE ESTE FIGURA URMATOARE
 figura_urmatoare macro cod
 local not1, not2, not3, not4, not5
 	mov EDX, 0
@@ -831,21 +831,24 @@ local not1, not2, not3, not4, not5
 	
 	cmp EDX, 0				 						
 	jne not1
-	make_image_macro area, 365, 95, 7
-	make_image_macro area, 385, 95, 7
-	make_image_macro area, 405, 95, 7
-	make_image_macro area, 385, 75, 7
+;T_tetromino
+	make_image_macro area, 375, 95, 7
+	make_image_macro area, 395, 95, 7
+	make_image_macro area, 415, 95, 7
+	make_image_macro area, 395, 75, 7
 	
 not1:
 	cmp EDX, 1
 	jne not2
-	make_image_macro area, 365, 95, 7
+;O_tetromino
 	make_image_macro area, 385, 95, 7
-	make_image_macro area, 365, 75, 7
+	make_image_macro area, 405, 95, 7
 	make_image_macro area, 385, 75, 7
+	make_image_macro area, 405, 75, 7
 not2:
 	cmp EDX, 2
 	jne not3
+;I_tetromino
 	make_image_macro area, 365, 95, 7
 	make_image_macro area, 385, 95, 7
 	make_image_macro area, 405, 95, 7
@@ -853,17 +856,19 @@ not2:
 not3:
 	cmp EDX, 3
 	jne not4
-	make_image_macro area, 365, 75, 7
-	make_image_macro area, 385, 75, 7
-	make_image_macro area, 385, 95, 7
-	make_image_macro area, 405, 95, 7
+;Z_tetromino
+	make_image_macro area, 375, 75, 7
+	make_image_macro area, 395, 75, 7
+	make_image_macro area, 395, 95, 7
+	make_image_macro area, 415, 95, 7
 not4:
 	cmp EDX, 4
 	jne not5
-	make_image_macro area, 365, 75, 7
-	make_image_macro area, 365, 95, 7
-	make_image_macro area, 385, 95, 7
-	make_image_macro area, 405, 95, 7
+;L_tetromino
+	make_image_macro area, 375, 75, 7
+	make_image_macro area, 375, 95, 7
+	make_image_macro area, 395, 95, 7
+	make_image_macro area, 415, 95, 7
 not5:
 
 endm
@@ -909,13 +914,14 @@ evt_timer:
 	
 evt_tasta:
 	mov eax,[EBP+arg2]
-	cmp EAX,41h 		;codul pentru A
+	cmp EAX,25h 		;codul pentru left arrow
 	jne urmatorul
 	deplasare_stanga cod_actual
 	urmatorul:
-	cmp EAX,44h 		;codul pentru D
+	cmp EAX,27h 		;codul pentru right arrow
 	jne afisare_litere
 	deplasare_dreapta cod_actual
+	
 afisare_litere:
 	;afisam valoarea counter-ului curent (sute, zeci si unitati)
 	mov ebx, 10
@@ -976,18 +982,15 @@ afisare_litere:
 	make_text_macro '0', area, 385, 135
 	make_text_macro '0', area, 395, 135
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-																										;AICI
-																										;LUCREZ
-																										;ACUM
 matrice_joc:																						
-
 	element 0, 0
 	manipulare_cod cod_actual
 	afisare_matr
 	figura_urmatoare cod_actual
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;REGIUNEA DE JOC IMPLEMENTATA CU AJUTORUL IMAGINILOR:
-
+	
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;REGIUNEA DE JOC REALIZATA CU AJUTORUL IMAGINILOR:
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;PATRATELE GRI CARE DELIMITEAZA PARTEA DIN STANGA A TERENULUI
 	 make_image_macro area, 50, 10, 7 
@@ -1100,38 +1103,26 @@ matrice_joc:
     verticala 250, 30, 420, 0
 	
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;DREPTUNGHIUL PENTRU 'NEXT'	
-	orizontala 360, 70, 90, 0
+	orizontala 360, 70,  90, 0
 	orizontala 360, 120, 90, 0
-	verticala 360, 70, 50, 0
-	verticala 450, 70, 50, 0
-	
-	; make_image_macro area, 365, 95, 1
-	; make_image_macro area, 385, 95, 1
-	; make_image_macro area, 405, 95, 1
-	; make_image_macro area, 425, 95, 1
-	
-	; make_image_macro area, 365, 75, 1
-	; make_image_macro area, 405, 75, 1
-	; make_image_macro area, 425, 75, 1
-	; make_image_macro area, 385, 75, 1
-	
+	verticala  360, 70,  50, 0
+	verticala  450, 70,  50, 0
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;DREPTUNGHIUL PENTRU 'SCOR'	
 	orizontala 360, 130, 50, 0
 	orizontala 360, 160, 50, 0
-	verticala 360, 130, 30, 0
-	verticala 410, 130, 30, 0
-	
+	verticala 360, 130, 30,  0
+	verticala 410, 130, 30,  0
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;DREPTUNGHIUL CARE INCONJOARA 'TETRIS'
 	orizontala 300, 10, 235, 0
 	orizontala 300, 50, 235, 0
-	verticala 300, 10, 40, 0
-	verticala 535, 10, 40, 0
+	verticala  300, 10, 40,  0
+	verticala  535, 10, 40,  0
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; T 
-	square 305,15,0ef4235h
-	square 315,15,0ef4235h
-	square 325,15,0ef4235h
-	square 315,25,0ef4235h
-	square 315,35,0ef4235h
+	square 305, 15, 0ef4235h
+	square 315, 15, 0ef4235h
+	square 325, 15, 0ef4235h
+	square 315, 25, 0ef4235h
+	square 315, 35, 0ef4235h
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; E
 	square 340, 15, 0f37937h
 	square 350, 15, 0f37937h
@@ -1140,33 +1131,33 @@ matrice_joc:
 	square 350, 35, 0f37937h
 	square 360, 35, 0f37937h
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; T
-	square 380,15, 0fef101h
-	square 390,15, 0fef101h
-	square 400,15, 0fef101h
-	square 390,25, 0fef101h
-	square 390,35, 0fef101h
+	square 380, 15, 0fef101h
+	square 390, 15, 0fef101h
+	square 400, 15, 0fef101h
+	square 390, 25, 0fef101h
+	square 390, 35, 0fef101h
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; R
-	square 420,15,07bc043h
-	square 430,15,07bc043h
-	square 440,15,07bc043h
-	square 420,25,07bc043h
-	square 430,25,07bc043h
-	square 420,35,07bc043h
-	square 440,35,07bc043h
+	square 420, 15, 07bc043h
+	square 430, 15, 07bc043h
+	square 440, 15, 07bc043h
+	square 420, 25, 07bc043h
+	square 430, 25, 07bc043h
+	square 420, 35, 07bc043h
+	square 440, 35, 07bc043h
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; I
-	square 460,15,00392cfh
-	square 470,15,00392cfh
-	square 480,15,00392cfh
-	square 470,25,00392cfh
-	square 460,35,00392cfh
-	square 470,35,00392cfh
-	square 480,35,00392cfh
+	square 460, 15, 00392cfh
+	square 470, 15, 00392cfh
+	square 480, 15, 00392cfh
+	square 470, 25, 00392cfh
+	square 460, 35, 00392cfh
+	square 470, 35, 00392cfh
+	square 480, 35, 00392cfh
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; S
-	square 500,35,06f3198h
-	square 510,35,06f3198h
-	square 510,25,06f3198h
-	square 520,15,06f3198h
-	square 510,15,06f3198h
+	square 500, 35, 06f3198h
+	square 510, 35, 06f3198h
+	square 510, 25, 06f3198h
+	square 520, 15, 06f3198h
+	square 510, 15, 06f3198h
 	
 final_draw:
 	popa
@@ -1213,24 +1204,24 @@ end start
 	 ; make_image_macro area, 510, 410, 4
 	 ; make_image_macro area, 530, 410, 5
 	 
-; T_tetromino_S1 macro x, y, color;		   _	
-	; square x, y+20, color;		     _|_|_								
-    ; square x+20, y+20, color;			|_|_|_|
+; T_tetromino_S1 macro x, y, color;		        _	
+	; square x, y+20, color;		          _|_|_								
+    ; square x+20, y+20, color;			     |_|_|_|
     ; square x+40, y+20, color;							
     ; square x+20, y, color
 ; endm
      							   	  
-; T_tetromino_S2 macro x, y, color;		  _	
-	; square x, y, color;				 |_|_								
-    ; square x, y+20, color;    	     |_|_|
-    ; square x, y+40, color;             |_|
+; T_tetromino_S2 macro x, y, color;		      _	
+	; square x, y, color;				     |_|_								
+    ; square x, y+20, color;    	         |_|_|
+    ; square x, y+40, color;                 |_|
     ; square x+20, y+20, color
 ; endm
 
 ; T_tetromino_S3 macro x, y, color;			   
-	; square x, y, color;			     _ _ _								
-    ; square x+20, y,color;	    		|_|_|_|
-    ; square x+40, y, color;		      |_|
+	; square x, y, color;			          _ _ _								
+    ; square x+20, y,color;	    		     |_|_|_|
+    ; square x+40, y, color;		           |_|
     ; square x+20, y+20, color
 ; endm
 
