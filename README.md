@@ -12,9 +12,6 @@ Rules give much needed structure to our play. A completely random environment of
 ![image](https://github.com/Bogdan016/Tetris/assets/76945445/f609e5d4-170f-4946-91ba-53f9cfa46cc5)
 
 
-The playground:
-
-![playgroud2](https://user-images.githubusercontent.com/76945445/237032975-48becfaf-104d-4645-ad12-c289640ce13e.png)
 PIECES:
 
 ![1alb](https://github.com/Bogdan016/Tetris/assets/76945445/616b2d3d-39ce-4ece-8170-ceaa6d6f3ca3)
