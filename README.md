@@ -1,24 +1,42 @@
-# Tetris
-The aim in Tetris is simple; you bring down blocks from the top of the screen. You can move the blocks around, either left to right and/or you can rotate them. The blocks fall at a certain rate, but you can make them fall faster if you’re sure of your positioning. Your objective is to get all the blocks to fill all the empty space in a line at the bottom of the screen; whenever you do this, you’ll find that the blocks vanish and you get awarded some points.
+# Tetris Game in Assembly Language
 
-A goal gives us a reason to play the game. Tetris offers an incredibly simple reason to play—pitting your wits against the computerized block dropper in order to last as long as you can.
+![Example](https://github.com/Bogdan016/Tetris/assets/76945445/67730ca3-8775-44c7-9ae0-a7de9c896a07)
 
-Rules
-Tetris has very simple rules: you can only move the pieces in specific ways; your game is over if your pieces reach the top of the screen; and you can only remove pieces from the screen by filling all the blank space in a line.
+This is a project I created for my university using assembly language. It's a simple implementation of the classic game Tetris, where different geometric shapes fall from the top of the screen, and the player has to arrange them to complete rows.
 
-Rules give much needed structure to our play. A completely random environment offers no clue as to how to play and would be incredibly frustrating. How fortunate it is, then, that Tetris’s three rules are what shape it into such an award-winning game.
-![Cerinta](https://user-images.githubusercontent.com/76945445/237056569-9c204c8b-2cc5-4c7a-9a93-d573f9c762b6.png)
+## Features
+- Playable Tetris game with basic controls.
+- Different Tetromino shapes: I, J, L, O, S, T, Z.
+- Ability to move the Tetrominoes left, right, and down.
+- Scoring system to keep track of your progress.
+  
+## How to Run
+1. Download or clone the repository to your local machine.
+2. Assemble the source code using your assembly language compiler (e.g NotePad++).
+3. Run the Tetris.asm file to start the game.
 
-![image](https://github.com/Bogdan016/Tetris/assets/76945445/f609e5d4-170f-4946-91ba-53f9cfa46cc5)
+## Controls
+- Left Arrow: Move Tetromino left.
+- Right Arrow: Move Tetromino right.
+- Down Arrow: Move Tetromino down faster.
+
+## Dependencies
+- Assembly Language Tools: Notepad++ code editor with ASM plugin.
+  - You can download Notepad++ from: [https://notepad-plus-plus.org/](https://notepad-plus-plus.org/)
+  - ASM plugin installation instructions can be found  [asm_tools.zip](https://github.com/Bogdan016/Tetris/files/12300383/asm_tools.zip)
+
+- Canvas Framework: A framework for handling graphics in assembly.
+  - You can download the Canvas framework from: [canvas_framework_keyboard.zip](https://github.com/Bogdan016/Tetris/files/12300381/canvas_framework_keyboard.zip)
+  - To learn how to use the Canvas framework, watch the tutorial: [Canvas Framework Tutorial](https://youtu.be/TTgkhZhaHmk)
+
+Please make sure you have these tools and libraries installed before attempting to run the Tetris game on your Windows environment.
 
 
-PIECES:
+## Acknowledgments
+Inspired by the classic game Tetris created by Alexey Pajitnov.
+Thanks to the university for providing the opportunity to explore assembly language programming.
+Feel free to fork, modify, and have fun with this project! If you have any questions or suggestions, feel free to reach out to me.
 
-![1alb](https://github.com/Bogdan016/Tetris/assets/76945445/616b2d3d-39ce-4ece-8170-ceaa6d6f3ca3)
-![aalbastru](https://github.com/Bogdan016/Tetris/assets/76945445/22880111-4f98-4b71-9af6-645daa056378)
-![agalben](https://github.com/Bogdan016/Tetris/assets/76945445/8efcf963-3ea0-44db-9427-17262ad3c58d)
-![amov](https://github.com/Bogdan016/Tetris/assets/76945445/499c00fa-15e2-4321-ac42-0d4fa9390b05)
-![aportocaliu](https://github.com/Bogdan016/Tetris/assets/76945445/0b370111-b876-4db6-b082-65f5417f52c0)
-![arosu](https://github.com/Bogdan016/Tetris/assets/76945445/c4fd0196-0eff-46c5-977a-1d01dc48aa39)
-![averde](https://github.com/Bogdan016/Tetris/assets/76945445/714c2aa7-2c43-422e-8197-32126ccb3562)
-![gri](https://github.com/Bogdan016/Tetris/assets/76945445/3953b6af-2910-4d38-82a9-654434e2d1e7)
+
+
+This project was like building Tetris from scratch using the simplest language the computer can understand. It was a bit challenging because I had to think about every tiny detail, but it was also really rewarding to see the game work with instructions that I wrote myself!
