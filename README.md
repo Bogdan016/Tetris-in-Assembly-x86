@@ -1,6 +1,6 @@
 # Tetris Game in Assembly Language
 
-![Example]([https://github.com/Bogdan016/Tetris/assets/76945445/67730ca3-8775-44c7-9ae0-a7de9c896a07](https://github.com/Bogdan016/Tetris/blob/main/Example.png?raw=true))
+![Example](https://github.com/Bogdan016/Tetris/blob/main/Example.png)
 
 This is a project I created for my university using assembly language. It's a simple implementation of the classic game Tetris, where different geometric shapes fall from the top of the screen, and the player has to arrange them to complete rows.
 
