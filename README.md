@@ -9,11 +9,6 @@ This is a project I created for my university using assembly language. It's a si
 - Different Tetromino shapes: I, J, L, O, S, T, Z.
 - Ability to move the Tetrominoes left, right, and down.
 - Scoring system to keep track of your progress.
-  
-## How to Run
-1. Download or clone the repository to your local machine.
-2. Assemble the source code using your assembly language compiler (e.g NotePad++).
-3. Run the Tetris.asm file to start the game.
 
 ## Controls
 - Left Arrow: Move Tetromino left.
